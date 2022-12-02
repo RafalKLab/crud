@@ -12,5 +12,12 @@
     ],
     "require": {
         "php": "^8.0.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rklab\\Crud\\Providers\\CrudServiceProvider"
+            ]
+        }
     }
 }
