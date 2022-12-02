@@ -1,0 +1,16 @@
+{
+    "name": "rklab/crud",
+    "description": "description",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "rklab",
+            "email": "kadzewiczrafal@gmail.com",
+            "homepage": "https://github.com/RafalKLab"
+        }
+    ],
+    "require": {
+        "php": "^8.0.2"
+    }
+}
