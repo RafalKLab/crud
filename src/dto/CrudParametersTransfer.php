@@ -2,9 +2,26 @@
 
 namespace Rklab\Crud\dto;
 
-class MigrationTableParametersTransfer
+class CrudParametersTransfer
 {
     private string $tableName;
+    private string $modelName;
+
+    /**
+     * @return string
+     */
+    public function getModelName(): string
+    {
+        return $this->modelName;
+    }
+
+    /**
+     * @param string $modelName
+     */
+    public function setModelName(string $modelName): void
+    {
+        $this->modelName = $modelName;
+    }
     private array $tableFields;
 
     /**

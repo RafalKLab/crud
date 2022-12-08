@@ -14,8 +14,8 @@ class FileWriter implements FileWriterInterface
         }
     }
 
-    public function putTextInFile(string $destination, string $migrationFile): void
+    public function putTextInFile(string $destination, string $fileContent): void
     {
-        File::put($destination, $migrationFile);
+        File::put($destination, $fileContent);
     }
 }

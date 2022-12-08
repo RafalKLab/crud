@@ -3,13 +3,14 @@
 namespace Rklab\Crud\Http\Controllers\Mapper;
 
 use Illuminate\Http\Request;
-use Rklab\Crud\dto\MigrationTableParametersTransfer;
+use Rklab\Crud\dto\CrudParametersTransfer;
 
 class DtoMapper implements DataMapperInterface
 {
-    public function mapMigrationParametersToDto(MigrationTableParametersTransfer $transfer, Request $request,): MigrationTableParametersTransfer
+    public function mapMigrationParametersToDto(CrudParametersTransfer $transfer, Request $request,): CrudParametersTransfer
     {
         $transfer->setTableName($request->input('tableName'));
+        $transfer->setModelName($request->input('modelName'));
         $arr = [];
         $iterrator = (int) $request->input('fieldItterator');
 

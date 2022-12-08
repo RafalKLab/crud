@@ -2,6 +2,7 @@
 
 namespace Rklab\Crud\Providers;
 
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class CrudServiceProvider extends ServiceProvider
@@ -23,10 +24,6 @@ class CrudServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__.'/../routes/crud.php');
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'crud');
-        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-
         $this->publishes([
             __DIR__.'/../resources/views' => resource_path('views/vendor/crud'),
         ]);
@@ -34,5 +31,11 @@ class CrudServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../public' => public_path('vendor/crud'),
         ], 'public');
+
+        $this->loadRoutesFrom(__DIR__.'/../routes/crud.php');
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'crud');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        Paginator::useBootstrap();
     }
 }

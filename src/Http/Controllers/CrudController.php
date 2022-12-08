@@ -19,7 +19,9 @@ class CrudController extends Controller
             $request,
         );
 
-        $this->getCrudFactory()->createMigrationGenerator()->generate($transfer);
+        $this->getCrudFactory()->createMigrationGenerator()->generateMigration($transfer);
+        $this->getCrudFactory()->createModelGenerator()->generateModel($transfer);
+
 
         Artisan::call('migrate');
 

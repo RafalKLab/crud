@@ -6,8 +6,12 @@
             <div class="col-md-6">
                 <form method="post">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Table name</label>
+                        <label for="tableName">Table name</label>
                         <input type="text" class="form-control" id="tableName" name="tableName" placeholder="Enter table name">
+                    </div>
+                    <div class="form-group">
+                        <label for="modelName">Model name</label>
+                        <input type="text" class="form-control" id="modelName" name="modelName" placeholder="Enter model name">
                     </div>
                     <div class="form-group">
                         <input type="hidden" id="fieldItterator" name="fieldItterator" value="0">

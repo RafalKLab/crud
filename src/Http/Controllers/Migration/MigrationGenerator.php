@@ -1,9 +1,8 @@
 <?php
 
-namespace Rklab\Crud\Http\Controllers\Migration\Generator;
+namespace Rklab\Crud\Http\Controllers\Migration;
 
-use Illuminate\Support\Facades\File;
-use Rklab\Crud\dto\MigrationTableParametersTransfer;
+use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
 class MigrationGenerator
@@ -20,9 +19,9 @@ class MigrationGenerator
     }
 
 
-    public function generate(MigrationTableParametersTransfer $transfer)
+    public function generateMigration(CrudParametersTransfer $transfer)
     {
-        $migrationFile = file_get_contents(__DIR__ . '/skeleton/migrationSkeleton.txt');
+        $migrationFile = file_get_contents(__DIR__ . '/skeleton/migration-skeleton.txt');
 
 
         $upMethod = $this->addUpMethodHeader($transfer->getTableName());
