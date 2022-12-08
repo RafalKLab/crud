@@ -6,6 +6,25 @@ class CrudParametersTransfer
 {
     private string $tableName;
     private string $modelName;
+    private array $tableFields;
+    private array $validationRules;
+
+    /**
+     * @return array
+     */
+    public function getValidationRules(): array
+    {
+        return $this->validationRules;
+    }
+
+    /**
+     * @param array $validationRules
+     */
+    public function setValidationRules(array $validationRules): void
+    {
+        $this->validationRules = $validationRules;
+    }
+
 
     /**
      * @return string
@@ -22,7 +41,6 @@ class CrudParametersTransfer
     {
         $this->modelName = $modelName;
     }
-    private array $tableFields;
 
     /**
      * @return string

@@ -31,7 +31,7 @@
                 <a href="#" class="nav-link">Contact</a>
             </li>
             <li class="btn-primary">
-                <a href="{{ route('generate') }}" class="nav-link">Generate CRUD</a>
+                <a href="{{ route('prepare') }}" class="nav-link">Generate CRUD</a>
             </li>
         </ul>
 

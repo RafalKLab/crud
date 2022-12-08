@@ -4,27 +4,44 @@ namespace Rklab\Crud\Http\Controllers\Mapper;
 
 use Illuminate\Http\Request;
 use Rklab\Crud\dto\CrudParametersTransfer;
+use Rklab\Crud\dto\FieldTransfer;
 
 class DtoMapper implements DataMapperInterface
 {
     public function mapMigrationParametersToDto(CrudParametersTransfer $transfer, Request $request,): CrudParametersTransfer
     {
-        $transfer->setTableName($request->input('tableName'));
-        $transfer->setModelName($request->input('modelName'));
+        $transfer->setTableName($request->input('table_name'));
+        $transfer->setModelName($request->input('model_name'));
         $arr = [];
+        $validations = [];
         $iterrator = (int) $request->input('fieldItterator');
 
-
         for ($i = 1; $i <= $iterrator; $i++) {
-            $field = 'field_' . $i;
-            $select = 'select_'. $i;
 
-            $key = $request->input($field);
-            $value = $request->input($select);
+            $fieldName = 'field_name_' . $i;
+            $fieldType = 'select_type_'. $i;
 
-            $arr[$key] = $value;
+            $require = 'required_' . $i;
+            $unique = 'unique_' . $i;
+
+            $rules = [];
+
+            if ($request->input($require)) {
+                $rules[] = 'require';
+            }
+
+            if ($request->input($unique)) {
+                $rules[] = 'unique';
+            }
+
+            $fieldTransfer = (new FieldTransfer())
+                ->setFieldName($request->input($fieldName))
+                ->setFieldType($request->input($fieldType))
+                ->setFieldValidations($rules);
+
+            $arr[] = $fieldTransfer;
         }
-
+        $transfer->setValidationRules($validations);
         $transfer->setTableFields($arr);
 
         return $transfer;

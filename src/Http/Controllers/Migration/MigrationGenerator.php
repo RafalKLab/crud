@@ -23,7 +23,6 @@ class MigrationGenerator
     {
         $migrationFile = file_get_contents(__DIR__ . '/skeleton/migration-skeleton.txt');
 
-
         $upMethod = $this->addUpMethodHeader($transfer->getTableName());
         $upMethod .= $this->addFields($transfer->getTableFields());
         $upMethod .= $this->addUpMethodFooter();
@@ -54,11 +53,13 @@ class MigrationGenerator
     private function addFields(array $tableFields)
     {
         $fields = '';
-        foreach ($tableFields as $key => $value) {
-            $field = match ($value) {
-                'int' => sprintf('$table->integer("%s"); ', $key),
-                'string' => sprintf('$table->string("%s"); ', $key),
-                'bool' => sprintf('$table->boolean("%s"); ', $key),
+
+        /** @var  $fieldTransfer */
+        foreach ($tableFields as $fieldTransfer) {
+            $field = match ($fieldTransfer->getFieldType()) {
+                'int' => sprintf('$table->integer("%s"); ', $fieldTransfer->getFieldName()),
+                'string' => sprintf('$table->string("%s"); ', $fieldTransfer->getFieldName()),
+                'bool' => sprintf('$table->boolean("%s"); ', $fieldTransfer->getFieldName()),
             };
             $fields.=$field;
         }
