@@ -87,6 +87,7 @@
                     @endfor
 
                     @csrf
+                    <a href="{{ route('prepare') }}" class="btn btn-secondary">Back</a>
                     <button class="btn btn-primary">Next</button>
                 </form>
             </div>

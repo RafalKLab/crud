@@ -47,11 +47,10 @@ class CrudController extends Controller
         );
 
         $this->getCrudFactory()->createMigrationGenerator()->generateMigration($transfer);
-//        $this->getCrudFactory()->createModelGenerator()->generateModel($transfer);
-
+        $this->getCrudFactory()->createModelGenerator()->generateModel($transfer);
 
 //        Artisan::call('migrate');
 
-        return view("crud::dashboard.index");
+        return redirect()->route('dashboard');
     }
 }

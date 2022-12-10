@@ -6,7 +6,7 @@ Route::middleware('web')->group(function () {
 
     Route::get('/crud', function () {
         return view('crud::dashboard.index');
-    });
+    })->name('dashboard');
 
     Route::get('/crud/generate', [\Rklab\Crud\Http\Controllers\CrudController::class, 'prepareCrud'])->name('generate');
     Route::post('/crud/generate', [\Rklab\Crud\Http\Controllers\CrudController::class, 'generateCrud']);

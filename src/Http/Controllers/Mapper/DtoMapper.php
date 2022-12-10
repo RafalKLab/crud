@@ -27,7 +27,7 @@ class DtoMapper implements DataMapperInterface
             $rules = [];
 
             if ($request->input($require)) {
-                $rules[] = 'require';
+                $rules[] = 'required';
             }
 
             if ($request->input($unique)) {

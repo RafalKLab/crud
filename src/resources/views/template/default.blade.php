@@ -6,7 +6,8 @@
     <title>AdminLTE 3 | Dashboard 2</title>
 
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('vendor/crud/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- overlayScrollbars -->
@@ -45,7 +46,8 @@
                 <div class="navbar-search-block">
                     <form class="form-inline">
                         <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                            <input class="form-control form-control-navbar" type="search" placeholder="Search"
+                                   aria-label="Search">
                             <div class="input-group-append">
                                 <button class="btn btn-navbar" type="submit">
                                     <i class="fas fa-search"></i>
@@ -162,7 +164,8 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
-            <img src="{{ asset('vendor/crud/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+            <img src="{{ asset('vendor/crud/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+                 class="brand-image img-circle elevation-3" style="opacity: .8">
             <span class="brand-text font-weight-light">AdminLTE 3</span>
         </a>
 
@@ -177,7 +180,8 @@
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
                     <li class="nav-item">
@@ -258,7 +262,23 @@
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-        <!-- Main content -->
+
+        @if(session()->has('success'))
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="alert alert-success">{{ session()->get('success') }}</p>
+                </div>
+            </div>
+        @endif
+        @if(session()->has('warning'))
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="alert alert-warning">{{ session()->get('warning') }}</p>
+                </div>
+            </div>
+    @endif
+
+    <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
 
@@ -299,7 +319,8 @@
 
 <!-- PAGE PLUGINS -->
 <!-- jQuery Mapael -->
-<script src="{{ asset('vendor/crud/plugins/jquery-mousewheel/jquery.mousewheel.jsplugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
+<script
+    src="{{ asset('vendor/crud/plugins/jquery-mousewheel/jquery.mousewheel.jsplugins/jquery-mousewheel/jquery.mousewheel.js') }}"></script>
 <script src="{{ asset('vendor/crud/plugins/raphael/raphael.min.js') }}"></script>
 <script src="{{ asset('vendor/crud/plugins/jquery-mapael/jquery.mapael.min.js') }}"></script>
 <script src="{{ asset('vendor/crud/plugins/jquery-mapael/maps/usa_states.min.js') }}"></script>

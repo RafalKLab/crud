@@ -3,6 +3,7 @@
 namespace Rklab\Crud\Http\Controllers\Migration;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
+use Rklab\Crud\dto\FieldTransfer;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
 class MigrationGenerator
@@ -57,9 +58,9 @@ class MigrationGenerator
         /** @var  $fieldTransfer */
         foreach ($tableFields as $fieldTransfer) {
             $field = match ($fieldTransfer->getFieldType()) {
-                'int' => sprintf('$table->integer("%s"); ', $fieldTransfer->getFieldName()),
-                'string' => sprintf('$table->string("%s"); ', $fieldTransfer->getFieldName()),
-                'bool' => sprintf('$table->boolean("%s"); ', $fieldTransfer->getFieldName()),
+                'int' => $this->putIntField($fieldTransfer),
+                'string' => $this->putStringField($fieldTransfer),
+                'bool' => $this->putBoolField($fieldTransfer),
             };
             $fields.=$field;
         }
@@ -77,6 +78,42 @@ class MigrationGenerator
     private function addDownMethod(string $tableName): string
     {
         return sprintf("Schema::dropIfExists('%s');", $tableName);
+    }
+
+    private function putIntField(FieldTransfer $fieldTransfer): string
+    {
+        $name = $fieldTransfer->getFieldName();
+        $validations = $fieldTransfer->getFieldValidations();
+
+        if (in_array('required', $validations)) {
+            return sprintf('%s$table->integer("%s");',"\n", $name);
+        } else {
+            return sprintf('%s$table->integer("%s")->nullable();', "\n", $name);
+        }
+    }
+
+    private function putStringField(FieldTransfer $fieldTransfer): string
+    {
+        $name = $fieldTransfer->getFieldName();
+        $validations = $fieldTransfer->getFieldValidations();
+
+        if (in_array('required', $validations)) {
+            return sprintf('%s$table->string("%s");', "\n", $name);
+        } else {
+            return sprintf('%s$table->string("%s")->nullable();', "\n", $name);
+        }
+    }
+
+    private function putBoolField(FieldTransfer $fieldTransfer): string
+    {
+        $name = $fieldTransfer->getFieldName();
+        $validations = $fieldTransfer->getFieldValidations();
+
+        if (in_array('required', $validations)) {
+            return sprintf('%s$table->boolean("%s");', "\n", $name);
+        } else {
+            return sprintf('%s$table->boolean("%s")->nullable();', "\n", $name);
+        }
     }
 }
 

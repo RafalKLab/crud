@@ -3,6 +3,7 @@
 namespace Rklab\Crud\Http\Controllers\Model;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
+use Rklab\Crud\dto\FieldTransfer;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
 class ModelGenerator
@@ -20,6 +21,7 @@ class ModelGenerator
 
     public function generateModel(CrudParametersTransfer $transfer)
     {
+
         $modelFile = $this->getModelFileFromSkeleton();
 
         $modelFile = $this->replaceModelName($modelFile, $transfer->getModelName());
@@ -31,10 +33,8 @@ class ModelGenerator
         $path = app_path();
         $path = $path . '/Models/' . $transfer->getModelName() . '.php';
 
-
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $modelFile);
-
     }
 
     private function getModelFileFromSkeleton(): string
@@ -55,8 +55,10 @@ class ModelGenerator
     private function prepareFillableFields(array $tableFields): string
     {
         $fillable = "[";
-        foreach ($tableFields as $key => $value) {
-            $fillable.= "'$key',";
+
+        /** @var FieldTransfer $fieldTransfer */
+        foreach ($tableFields as $fieldTransfer) {
+            $fillable.= sprintf("'%s',", $fieldTransfer->getFieldName());
         }
         $fillable.="]" ;
 
