@@ -1,12 +1,13 @@
 <?php
 
-namespace Rklab\Crud\Http\Controllers\View;
+namespace Rklab\Crud\Http\Controllers\Generator\View;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
-class ViewGenerator
+class ViewGenerator implements CrudGeneratorInterface
 {
     private FileWriterInterface $writer;
 
@@ -19,7 +20,7 @@ class ViewGenerator
         $this->writer = $writer;
     }
 
-    public function generateViews(CrudParametersTransfer $transfer): void
+    public function generate(CrudParametersTransfer $transfer): void
     {
         $this->generateIndex($transfer);
         $this->generateForm($transfer);
@@ -94,7 +95,7 @@ class ViewGenerator
             $fieldName = $field->getFieldName();
             $formInputs .= '<div class="row">';
             $formInputs .= "\n";
-            $formInputs .= sprintf("<label for=\"%s\" class='col - sm - 2 col - form - label '>%1\$s: </label>", $fieldName);
+            $formInputs .= sprintf("<label for=\"%s\" class='col-sm-2 col-form-label '>%1\$s: </label>", $fieldName);
             $formInputs .= "\n";
             $formInputs .= '<div class="col-sm-6">';
             $formInputs .= "\n";

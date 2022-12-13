@@ -1,12 +1,13 @@
 <?php
 
-namespace Rklab\Crud\Http\Controllers\Migration;
+namespace Rklab\Crud\Http\Controllers\Generator\Migration;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
-class MigrationGenerator
+class MigrationGenerator implements CrudGeneratorInterface
 {
     private FileWriterInterface $writer;
 
@@ -20,7 +21,7 @@ class MigrationGenerator
     }
 
 
-    public function generateMigration(CrudParametersTransfer $transfer)
+    public function generate(CrudParametersTransfer $transfer): void
     {
         $migrationFile = file_get_contents(__DIR__ . '/skeleton/migration-skeleton.txt');
 

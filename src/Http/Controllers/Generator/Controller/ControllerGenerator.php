@@ -1,12 +1,13 @@
 <?php
 
-namespace Rklab\Crud\Http\Controllers\Controller;
+namespace Rklab\Crud\Http\Controllers\Generator\Controller;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
-class ControllerGenerator
+class ControllerGenerator implements CrudGeneratorInterface
 {
     private FileWriterInterface $writer;
 
@@ -17,7 +18,7 @@ class ControllerGenerator
         $this->writer = $writer;
     }
 
-    public function generateController(CrudParametersTransfer $transfer): void
+    public function generate(CrudParametersTransfer $transfer): void
     {
         $controllerFile = file_get_contents(__DIR__ . '/skeleton/controller-skeleton.txt');
 
@@ -41,7 +42,7 @@ class ControllerGenerator
             }
 
             $rule .= match ($field->getFieldType()) {
-                'int' => "numeric',",
+                'int' => "numeric|min:1|max:2147483647',",
                 'string' => "max:255',",
             };
 

@@ -4,11 +4,12 @@ namespace Rklab\Crud\Http\Controllers;
 
 use JetBrains\PhpStorm\Pure;
 use Rklab\Crud\dto\CrudParametersTransfer;
-use Rklab\Crud\Http\Controllers\Controller\ControllerGenerator;
+use Rklab\Crud\Http\Controllers\Generator\Controller\ControllerGenerator;
+use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorCollection;
+use Rklab\Crud\Http\Controllers\Generator\Migration\MigrationGenerator;
+use Rklab\Crud\Http\Controllers\Generator\Model\ModelGenerator;
+use Rklab\Crud\Http\Controllers\Generator\View\ViewGenerator;
 use Rklab\Crud\Http\Controllers\Mapper\DtoMapper;
-use Rklab\Crud\Http\Controllers\Migration\MigrationGenerator;
-use Rklab\Crud\Http\Controllers\Model\ModelGenerator;
-use Rklab\Crud\Http\Controllers\View\ViewGenerator;
 use Rklab\Crud\Http\Controllers\Writer\FileWriter;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
@@ -55,5 +56,19 @@ class CrudFactory
         return new ViewGenerator(
             $this->createFileWriter()
         );
+    }
+
+    public function getGeneratorCollection(): CrudGeneratorCollection
+    {
+        return $this->createCrudGeneratorCollection();
+    }
+
+    private function createCrudGeneratorCollection(): CrudGeneratorCollection
+    {
+        return (new CrudGeneratorCollection)
+            ->addGenerator($this->createMigrationGenerator())
+            ->addGenerator($this->createModelGenerator())
+            ->addGenerator($this->createControllerGenerator())
+            ->addGenerator($this->createViewGenerator());
     }
 }

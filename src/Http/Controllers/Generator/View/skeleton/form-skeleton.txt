@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         @isset(${{model name lowercase}})
-            <h1>{{model name lowercase}} update
+            <h1>{{model name lowercase}} update</h1>
         @else
             <h1>Add new {{model name lowercase}}</h1>
         @endisset

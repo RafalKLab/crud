@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
 use Rklab\Crud\dto\CrudParametersTransfer;
+use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Models\Crud;
 
 class CrudController extends Controller
@@ -44,15 +45,11 @@ class CrudController extends Controller
             ]);
         }
 
-        $transfer = $this->getCrudFactory()->createDtoMapper()->mapMigrationParametersToDto(
-            $this->getCrudFactory()->createMigrationTableParametersTransfer(),
-            $request,
-        );
+        $transfer = $this->getTransfer($request);
 
-        $this->getCrudFactory()->createMigrationGenerator()->generateMigration($transfer);
-        $this->getCrudFactory()->createModelGenerator()->generateModel($transfer);
-        $this->getCrudFactory()->createControllerGenerator()->generateController($transfer);
-        $this->getCrudFactory()->createViewGenerator()->generateViews($transfer);
+        foreach ($this->getCrudGenerators() as $generator) {
+            $generator->generate($transfer);
+        }
 
         $this->saveCrud($transfer);
 
@@ -77,5 +74,23 @@ class CrudController extends Controller
         $cruds = Crud::paginate(2);
 
         return view('crud::crud.crud_list')->with('cruds', $cruds);
+    }
+
+    private function getTransfer(Request $request): CrudParametersTransfer
+    {
+        return $this->getCrudFactory()->createDtoMapper()->mapMigrationParametersToDto(
+            $this->getCrudFactory()->createMigrationTableParametersTransfer(),
+            $request,
+        );
+    }
+
+    /**
+     * @return CrudGeneratorInterface[]
+     */
+    private function getCrudGenerators(): array
+    {
+        return $this->getCrudFactory()
+            ->getGeneratorCollection()
+            ->getGenerators();
     }
 }

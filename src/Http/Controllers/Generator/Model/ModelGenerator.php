@@ -1,12 +1,13 @@
 <?php
 
-namespace Rklab\Crud\Http\Controllers\Model;
+namespace Rklab\Crud\Http\Controllers\Generator\Model;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
-class ModelGenerator
+class ModelGenerator implements CrudGeneratorInterface
 {
     private FileWriterInterface $writer;
 
@@ -19,7 +20,7 @@ class ModelGenerator
         $this->writer = $writer;
     }
 
-    public function generateModel(CrudParametersTransfer $transfer)
+    public function generate(CrudParametersTransfer $transfer): void
     {
 
         $modelFile = $this->getModelFileFromSkeleton();

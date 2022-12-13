@@ -40,6 +40,8 @@ class {{model name}}Controller extends Controller
 
     public function update(Request $request, {{model name}} ${{model name lowercase}})
     {
+        {{validation}}
+
         ${{model name lowercase}}->update($request->all());
 
         return redirect()->route('{{model name lowercase}}s.index');
