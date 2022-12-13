@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('table_name');
             $table->string('model_name');
+            $table->string('route');
             $table->timestamps();
         });
     }

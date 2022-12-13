@@ -1,0 +1,25 @@
+@extends('crud::template.default')
+@section('content')
+    <div class="container">
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                {{model fields}}
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{${{model name lowercase}}->id}}</td>
+                {{model fields data}}
+            </tr>
+            </tbody>
+        </table>
+
+        <a class = "btn btn-secondary" href="{{route('{{model name lowercase}}s.index')}}">Back</a>
+    </div>
+
+@endsection
+
+

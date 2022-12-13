@@ -3,7 +3,10 @@
 namespace Rklab\Crud\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
+use Rklab\Crud\dto\CrudParametersTransfer;
+use Rklab\Crud\Models\Crud;
 
 class CrudController extends Controller
 {
@@ -30,7 +33,7 @@ class CrudController extends Controller
 
     public function generateCrud(Request $request)
     {
-        for ($i=1; $i<= $request->input('fieldItterator'); $i++) {
+        for ($i = 1; $i <= $request->input('fieldItterator'); $i++) {
             $fieldName = 'field_name_' . $i;
             $selectType = 'select_type_' . $i;
             $this->validate($request, [
@@ -48,9 +51,31 @@ class CrudController extends Controller
 
         $this->getCrudFactory()->createMigrationGenerator()->generateMigration($transfer);
         $this->getCrudFactory()->createModelGenerator()->generateModel($transfer);
+        $this->getCrudFactory()->createControllerGenerator()->generateController($transfer);
+        $this->getCrudFactory()->createViewGenerator()->generateViews($transfer);
 
-//        Artisan::call('migrate');
+        $this->saveCrud($transfer);
+
+        Artisan::call('migrate');
 
         return redirect()->route('dashboard');
+    }
+
+    private function saveCrud(CrudParametersTransfer $transfer): void
+    {
+        $params = [
+            'route' => sprintf("%ss.index", strtolower($transfer->getModelName())),
+            'table_name' => $transfer->getTableName(),
+            'model_name' => $transfer->getModelName(),
+        ];
+
+        Crud::create($params);
+    }
+
+    public function listCrud()
+    {
+        $cruds = Crud::paginate(2);
+
+        return view('crud::crud.crud_list')->with('cruds', $cruds);
     }
 }

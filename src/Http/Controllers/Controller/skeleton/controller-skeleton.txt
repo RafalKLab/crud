@@ -2,84 +2,53 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\{{modelName}};
+use App\Models\{{model name}};
 use Illuminate\Http\Request;
 
-class {{{{modelName}}}}Controller extends Controller
+class {{model name}}Controller extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        ${{model name lowercase}}s = {{model name}}::paginate(2);
+
+        return view('{{model name lowercase}}.index')->with('{{model name lowercase}}s', ${{model name lowercase}}s);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('{{model name lowercase}}.form');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        {{validation}}
+
+        {{model name}}::create($request->all());
+
+        return redirect()->route('{{model name lowercase}}s.index')->with('success','Successfully added a new {{model name}}.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show({{modelName and variable}})
+    public function show({{model name}} ${{model name lowercase}})
     {
-        //
+        return view('{{model name lowercase}}.show', compact('{{model name lowercase}}'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function edit({{modelName and variable}})
+    public function edit({{model name}} ${{model name lowercase}})
     {
-        //
+        return view('{{model name lowercase}}.form', compact('{{model name lowercase}}'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\{{modelName and variable}}
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, {{modelName and variable}})
+    public function update(Request $request, {{model name}} ${{model name lowercase}})
     {
-        //
+        ${{model name lowercase}}->update($request->all());
+
+        return redirect()->route('{{model name lowercase}}s.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\{{modelName and variable}}
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy({{modelName and variable}})
+    public function destroy({{model name}} ${{model name lowercase}})
     {
-        //
+        ${{model name lowercase}}->delete();
+
+        return redirect()->route('{{model name lowercase}}s.index');
     }
 }

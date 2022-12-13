@@ -1,0 +1,30 @@
+@extends('crud::template.default')
+
+@section('content')
+    <div class="container">
+        @isset(${{model name lowercase}})
+            <h1>{{model name lowercase}} update
+        @else
+            <h1>Add new {{model name lowercase}}</h1>
+        @endisset
+        <hr>
+        <form method="POST"
+              @isset(${{model name lowercase}})
+              action="{{route('{{model name lowercase}}s.update', ${{model name lowercase}})}}"
+              @else
+              action="{{route('{{model name lowercase}}s.store')}}"
+            @endisset
+        >
+            <div>
+                @isset(${{model name lowercase}})
+                    @method('PUT')
+                @endisset
+                @csrf
+
+               {{form inputs}}
+                <a class = "btn btn-secondary" href="{{route('{{model name lowercase}}s.index')}}">Back</a>
+                <button class="btn btn-success">Save</button>
+            </div>
+        </form>
+    </div>
+@endsection

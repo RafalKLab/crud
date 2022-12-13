@@ -1,0 +1,36 @@
+@extends('crud::template.default')
+@section('content')
+    <div class="container">
+
+        <h1>{{model name lowercase}}s</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                {{table fields}}
+                <th scope="col">action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach(${{model name lowercase}}s as ${{model name lowercase}})
+                <tr>
+                <td>{{${{model name lowercase}}->id}}</td>
+                    {{table fields data}
+                    <td>
+                        <form action="{{route('{{model name lowercase}}s.destroy', ${{model name lowercase}})}}" method="POST">
+                            <a href="{{route('{{model name lowercase}}s.show', ${{model name lowercase}})}}" class="btn btn-light">show</a>
+                            <a href="{{route('{{model name lowercase}}s.edit', ${{model name lowercase}})}}" class="btn btn-info">edit</a>
+                            @csrf
+                            @method('DELETE')
+                            <input type="submit" class="btn btn-danger" value="Delete">
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+        {{ ${{model name lowercase}}s->links() }}
+        <a href="{{route('{{model name lowercase}}s.create')}}" class="btn btn-success">Add new</a>
+    </div>
+
+@endsection
