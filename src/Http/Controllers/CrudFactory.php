@@ -47,7 +47,8 @@ class CrudFactory
     #[Pure] public function createControllerGenerator(): ControllerGenerator
     {
         return new ControllerGenerator(
-            $this->createFileWriter()
+            $this->createFileWriter(),
+            $this->createCrudConfig(),
         );
     }
 
@@ -70,5 +71,10 @@ class CrudFactory
             ->addGenerator($this->createModelGenerator())
             ->addGenerator($this->createControllerGenerator())
             ->addGenerator($this->createViewGenerator());
+    }
+
+    #[Pure] public function createCrudConfig(): CrudConfig
+    {
+        return new CrudConfig();
     }
 }

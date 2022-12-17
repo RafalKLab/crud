@@ -26,7 +26,6 @@ class CrudController extends Controller
         return redirect()->route('generate');
     }
 
-
     public function prepareCrud()
     {
         return view("crud::crud.crud_settings");
@@ -47,13 +46,13 @@ class CrudController extends Controller
 
         $transfer = $this->getTransfer($request);
 
-        foreach ($this->getCrudGenerators() as $generator) {
-            $generator->generate($transfer);
-        }
-
-        $this->saveCrud($transfer);
-
-        Artisan::call('migrate');
+        match ($transfer->getGenerateOption()) {
+            'full' => $this->generateFullCrud($transfer),
+            'migration' => $this->generateOnlyMigration($transfer),
+            'model' => $this->generateOnlyModel($transfer),
+            'controller' => $this->generateOnlyController($transfer),
+            'view' => $this->generateOnlyView($transfer),
+        };
 
         return redirect()->route('dashboard');
     }
@@ -71,7 +70,7 @@ class CrudController extends Controller
 
     public function listCrud()
     {
-        $cruds = Crud::paginate(2);
+        $cruds = Crud::paginate(10);
 
         return view('crud::crud.crud_list')->with('cruds', $cruds);
     }
@@ -92,5 +91,46 @@ class CrudController extends Controller
         return $this->getCrudFactory()
             ->getGeneratorCollection()
             ->getGenerators();
+    }
+
+    private function generateOnlyMigration(CrudParametersTransfer $transfer): CrudParametersTransfer
+    {
+        $this->getCrudFactory()->createMigrationGenerator()->generate($transfer);
+
+        return $transfer;
+    }
+
+    private function generateOnlyModel(CrudParametersTransfer $transfer): CrudParametersTransfer
+    {
+        $this->getCrudFactory()->createModelGenerator()->generate($transfer);
+
+        return $transfer;
+    }
+
+    private function generateOnlyController(CrudParametersTransfer $transfer): CrudParametersTransfer
+    {
+        $this->getCrudFactory()->createControllerGenerator()->generate($transfer);
+
+        return $transfer;
+    }
+
+    private function generateOnlyView(CrudParametersTransfer $transfer): CrudParametersTransfer
+    {
+        $this->getCrudFactory()->createViewGenerator()->generate($transfer);
+
+        return $transfer;
+    }
+
+    private function generateFullCrud(CrudParametersTransfer $transfer): CrudParametersTransfer
+    {
+        foreach ($this->getCrudGenerators() as $generator) {
+            $generator->generate($transfer);
+        }
+
+        $this->saveCrud($transfer);
+
+        Artisan::call('migrate');
+
+        return $transfer;
     }
 }

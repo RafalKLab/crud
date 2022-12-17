@@ -6,6 +6,7 @@ class CrudParametersTransfer
 {
     private string $tableName;
     private string $modelName;
+    private string $generateOption;
     private array $tableFields;
     private array $validationRules;
 
@@ -72,5 +73,21 @@ class CrudParametersTransfer
     public function setTableFields(array $tableFields): void
     {
         $this->tableFields = $tableFields;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGenerateOption(): string
+    {
+        return $this->generateOption;
+    }
+
+    /**
+     * @param string $generateOption
+     */
+    public function setGenerateOption(string $generateOption): void
+    {
+        $this->generateOption = $generateOption;
     }
 }

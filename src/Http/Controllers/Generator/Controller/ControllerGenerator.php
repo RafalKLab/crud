@@ -4,6 +4,7 @@ namespace Rklab\Crud\Http\Controllers\Generator\Controller;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\Http\Controllers\CrudConfig;
 use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
@@ -11,12 +12,21 @@ class ControllerGenerator implements CrudGeneratorInterface
 {
     private FileWriterInterface $writer;
 
-    protected const ROUTE_SIGNATURE = "\nRoute::resource('/crud/%ss', \App\Http\Controllers\%sController::class);";
+    private CrudConfig $config;
 
-    public function __construct(FileWriterInterface $writer)
+    protected const ROUTE_SIGNATURE = "\nRoute::resource('/%s/%ss', \App\Http\Controllers\%sController::class);";
+
+    /**
+     * ControllerGenerator constructor.
+     * @param FileWriterInterface $writer
+     * @param CrudConfig $config
+     */
+    public function __construct(FileWriterInterface $writer, CrudConfig $config)
     {
         $this->writer = $writer;
+        $this->config = $config;
     }
+
 
     public function generate(CrudParametersTransfer $transfer): void
     {
@@ -65,9 +75,8 @@ class ControllerGenerator implements CrudGeneratorInterface
             $routePath = base_path('routes/web.php');
             $routes = file_get_contents($routePath);
 
-            $routes .= sprintf(self::ROUTE_SIGNATURE, $modelNamelowercase, $modelName);
+            $routes .= sprintf(self::ROUTE_SIGNATURE, $this->config->getDefaultRoutePrefix(), $modelNamelowercase, $modelName);
 
             $this->writer->putTextInFile($routePath, $routes);
-
     }
 }

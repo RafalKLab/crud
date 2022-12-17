@@ -9,7 +9,7 @@ class {{model name}}Controller extends Controller
 {
     public function index()
     {
-        ${{model name lowercase}}s = {{model name}}::paginate(2);
+        ${{model name lowercase}}s = {{model name}}::paginate(10);
 
         return view('{{model name lowercase}}.index')->with('{{model name lowercase}}s', ${{model name lowercase}}s);
     }

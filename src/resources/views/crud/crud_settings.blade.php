@@ -85,6 +85,17 @@
                         </div>
                     @endfor
 
+                    <div class="form-group">
+                        Generate option:
+                        <select class="form-select" aria-label="select type" name="generate_option">
+                            <option value="full" selected>full CRUD</option>
+                            <option value="migration">only migration</option>
+                            <option value="model">only model</option>
+                            <option value="controller">only controller</option>
+                            <option value="view">only view</option>
+                        </select>
+                    </div>
+
                     @csrf
                     <a href="{{ route('prepare') }}" class="btn btn-secondary">Back</a>
                     <button class="btn btn-primary">Next</button>
