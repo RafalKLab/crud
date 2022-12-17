@@ -13,6 +13,7 @@ class DtoMapper implements DataMapperInterface
         $transfer->setTableName($request->input('table_name'));
         $transfer->setModelName($request->input('model_name'));
         $transfer->setGenerateOption($request->input('generate_option'));
+        $transfer->setRoutePrefix($request->input('route_prefix') ? : '');
         $arr = [];
         $validations = [];
         $iterrator = (int) $request->input('fieldItterator');

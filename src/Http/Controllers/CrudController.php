@@ -41,6 +41,7 @@ class CrudController extends Controller
                 $selectType => 'required|alpha_dash|max:100',
                 'table_name' => 'required|alpha|max:25|unique:cruds',
                 'model_name' => 'required|alpha|max:25|unique:cruds',
+                'route_prefix' => 'nullable|alpha|max:100|not_in:crud',
             ]);
         }
 

@@ -34,6 +34,18 @@
                         @endif
                     </div>
                     <div class="form-group">
+                        <label for="model_name">Route prefix</label>
+                        <input type="text" class="form-control" id="route_prefix" name="route_prefix"
+                               placeholder="Enter route prefix if need"
+                               value="{{Request::old('route_prefix') ? : ''}}"
+                        >
+                        @if ($errors->has('route_prefix'))
+                            <span class="help-block text-danger">
+                            {{ $errors->first('route_prefix')}}
+                        </span>
+                        @endif
+                    </div>
+                    <div class="form-group">
                         <input type="hidden" id="fieldItterator" name="fieldItterator" value="{{$number_of_fields}}">
                     </div>
                     @for ($i = 1; $i <= $number_of_fields; $i++)

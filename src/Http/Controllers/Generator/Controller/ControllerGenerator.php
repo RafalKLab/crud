@@ -75,8 +75,15 @@ class ControllerGenerator implements CrudGeneratorInterface
             $routePath = base_path('routes/web.php');
             $routes = file_get_contents($routePath);
 
-            $routes .= sprintf(self::ROUTE_SIGNATURE, $this->config->getDefaultRoutePrefix(), $modelNamelowercase, $modelName);
+            $routePrefix = $this->getRoutePrefix($transfer);
+
+            $routes .= sprintf(self::ROUTE_SIGNATURE, $routePrefix, $modelNamelowercase, $modelName);
 
             $this->writer->putTextInFile($routePath, $routes);
+    }
+
+    private function getRoutePrefix(CrudParametersTransfer $transfer): string
+    {
+        return $transfer->getRoutePrefix() ? : $this->config->getDefaultRoutePrefix();
     }
 }

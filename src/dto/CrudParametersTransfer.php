@@ -7,6 +7,7 @@ class CrudParametersTransfer
     private string $tableName;
     private string $modelName;
     private string $generateOption;
+    private string $routePrefix;
     private array $tableFields;
     private array $validationRules;
 
@@ -89,5 +90,21 @@ class CrudParametersTransfer
     public function setGenerateOption(string $generateOption): void
     {
         $this->generateOption = $generateOption;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRoutePrefix(): string
+    {
+        return $this->routePrefix;
+    }
+
+    /**
+     * @param string $routePrefix
+     */
+    public function setRoutePrefix(string $routePrefix): void
+    {
+        $this->routePrefix = $routePrefix;
     }
 }
