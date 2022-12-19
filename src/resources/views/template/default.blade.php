@@ -198,7 +198,14 @@
                             <i class="nav-icon fa fa-list"></i>
                             <p>
                                 CRUD list
-{{--                                <span class="right badge badge-danger">New</span>--}}
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{route('relantionships')}}" class="nav-link">
+                            <i class="nav-icon fa fa-retweet"></i>
+                            <p>
+                                Model relationship
                             </p>
                         </a>
                     </li>

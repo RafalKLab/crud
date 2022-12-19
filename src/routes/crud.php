@@ -15,4 +15,7 @@ Route::middleware('web')->group(function () {
 
     Route::get('/crud/prepare', [\Rklab\Crud\Http\Controllers\CrudController::class, 'prepareFields'])->name('prepare');
     Route::post('/crud/prepare', [\Rklab\Crud\Http\Controllers\CrudController::class, 'generateFields']);
+
+    Route::get('/crud/relationship/create', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'createRelationship'])->name('relantionships');
+    Route::post('/crud/relationship/create', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'storeRelationship']);
 });

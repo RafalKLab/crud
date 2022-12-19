@@ -3,11 +3,25 @@
 namespace Rklab\Crud\Http\Controllers\Mapper;
 
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\Pure;
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\dto\ModelRelationshipTransfer;
+use Rklab\Crud\Http\Controllers\Repository\CrudRepository;
 
 class DtoMapper implements DataMapperInterface
 {
+    private CrudRepository $repository;
+
+    /**
+     * DtoMapper constructor.
+     * @param CrudRepository $repository
+     */
+    public function __construct(CrudRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     public function mapMigrationParametersToDto(CrudParametersTransfer $transfer, Request $request,): CrudParametersTransfer
     {
         $transfer->setTableName($request->input('table_name'));
@@ -45,6 +59,21 @@ class DtoMapper implements DataMapperInterface
         }
         $transfer->setValidationRules($validations);
         $transfer->setTableFields($arr);
+
+        return $transfer;
+    }
+
+    public function mapModelRelationshipToDto(ModelRelationshipTransfer $transfer, Request $request): ModelRelationshipTransfer
+    {
+        $aimModel = $this->repository->getCrudById($request->input('aim_model'));
+        $transfer->setAimModelName($aimModel->model_name);
+        $transfer->setAimModelTabeName($aimModel->table_name);
+
+        $refModel = $this->repository->getCrudById($request->input('ref_model'));
+        $transfer->setRefModelName($refModel->model_name);
+        $transfer->setRefModelTableName($refModel->table_name);
+
+        $transfer->setRelationType($request->input('relationship_type'));
 
         return $transfer;
     }

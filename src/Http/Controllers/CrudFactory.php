@@ -4,12 +4,15 @@ namespace Rklab\Crud\Http\Controllers;
 
 use JetBrains\PhpStorm\Pure;
 use Rklab\Crud\dto\CrudParametersTransfer;
+use Rklab\Crud\dto\ModelRelationshipTransfer;
 use Rklab\Crud\Http\Controllers\Generator\Controller\ControllerGenerator;
 use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorCollection;
 use Rklab\Crud\Http\Controllers\Generator\Migration\MigrationGenerator;
 use Rklab\Crud\Http\Controllers\Generator\Model\ModelGenerator;
 use Rklab\Crud\Http\Controllers\Generator\View\ViewGenerator;
 use Rklab\Crud\Http\Controllers\Mapper\DtoMapper;
+use Rklab\Crud\Http\Controllers\ModelRelationshipManager\OneToManyRelationshipManager;
+use Rklab\Crud\Http\Controllers\Repository\CrudRepository;
 use Rklab\Crud\Http\Controllers\Writer\FileWriter;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
@@ -34,7 +37,9 @@ class CrudFactory
 
     #[Pure] public function createDtoMapper(): DtoMapper
     {
-        return new DtoMapper();
+        return new DtoMapper(
+            $this->getCrudRepository(),
+        );
     }
 
     #[Pure] public function createModelGenerator(): ModelGenerator
@@ -76,5 +81,23 @@ class CrudFactory
     #[Pure] public function createCrudConfig(): CrudConfig
     {
         return new CrudConfig();
+    }
+
+    #[Pure] public function createModelRelationshipTransfer(): ModelRelationshipTransfer
+    {
+        return new ModelRelationshipTransfer();
+    }
+
+    #[Pure] private function getCrudRepository(): CrudRepository
+    {
+        return new CrudRepository();
+    }
+
+    #[Pure] public function createOneToManyRelationshipManager(): OneToManyRelationshipManager
+    {
+        return new OneToManyRelationshipManager(
+            $this->createFileWriter(),
+            $this->createMigrationGenerator(),
+        );
     }
 }

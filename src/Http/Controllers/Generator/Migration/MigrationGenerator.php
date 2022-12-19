@@ -4,6 +4,7 @@ namespace Rklab\Crud\Http\Controllers\Generator\Migration;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
+use Rklab\Crud\dto\ModelRelationshipTransfer;
 use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
@@ -19,7 +20,6 @@ class MigrationGenerator implements CrudGeneratorInterface
     {
         $this->writer = $writer;
     }
-
 
     public function generate(CrudParametersTransfer $transfer): void
     {
@@ -40,14 +40,30 @@ class MigrationGenerator implements CrudGeneratorInterface
 
         $this->writer->createDirectory($destination);
         $this->writer->putTextInFile($destination, $migrationFile);
+    }
 
+    public function generateRelationshipMigration(ModelRelationshipTransfer $transfer){
+
+        $aimModelNameLowercase = strtolower($transfer->getAimModelName());
+
+        $migrationFile = file_get_contents(__DIR__ . '/skeleton/one-to-many-migration-skeleton.txt');
+        $migrationFile = str_replace('{{table name}}', $transfer->getRefModelTableName(), $migrationFile);
+
+        $relationField = sprintf("\$table->unsignedBigInteger('%s_id')->nullable(); \n", $aimModelNameLowercase);
+        $migrationFile = str_replace('{{relation field}}', $relationField, $migrationFile);
+
+        $datePrefix = date('Y_m_d_His');
+        $destination = database_path('/migrations/') . $datePrefix . sprintf("_add_%s_relation_to_%s_table.php", $aimModelNameLowercase, $transfer->getRefModelTableName());
+
+        $this->writer->createDirectory($destination);
+        $this->writer->putTextInFile($destination, $migrationFile);
     }
 
     private function addUpMethodHeader(string $tableName): string
     {
         return sprintf(
             "Schema::create('%s', function (Blueprint \$table) {
-            \$table->id();",
+            \$table->bigIncrements('id');",
             $tableName
         );
     }
