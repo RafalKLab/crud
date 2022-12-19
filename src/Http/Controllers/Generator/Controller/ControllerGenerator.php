@@ -14,7 +14,7 @@ class ControllerGenerator implements CrudGeneratorInterface
 
     private CrudConfig $config;
 
-    protected const ROUTE_SIGNATURE = "\nRoute::resource('/%s/%ss', \App\Http\Controllers\%sController::class);";
+    protected const ROUTE_SIGNATURE = "\nRoute::resource('/%s/%ss', \App\Http\Controllers\%3\$s\%3\$sController::class);";
 
     /**
      * ControllerGenerator constructor.
@@ -67,7 +67,7 @@ class ControllerGenerator implements CrudGeneratorInterface
 
 
             $path = app_path();
-            $path = $path . '/Http/Controllers/' . $modelName . 'Controller.php';
+            $path = $path . sprintf("/Http/Controllers/%1\$s/%1\$sController.php", $modelName);
 
             $this->writer->createDirectory($path);
             $this->writer->putTextInFile($path, $controllerFile);

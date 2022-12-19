@@ -25,7 +25,7 @@
                         <label for="model_name">Model name</label>
                         <input type="text" class="form-control" id="model_name" name="model_name"
                                placeholder="Enter model name"
-                               value="{{Request::old('table_name') ? : ''}}"
+                               value="{{Request::old('model_name') ? : ''}}"
                         >
                         @if ($errors->has('model_name'))
                             <span class="help-block text-danger">
@@ -34,7 +34,7 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label for="model_name">Route prefix</label>
+                        <label for="route_prefix">Route prefix</label>
                         <input type="text" class="form-control" id="route_prefix" name="route_prefix"
                                placeholder="Enter route prefix if need"
                                value="{{Request::old('route_prefix') ? : ''}}"

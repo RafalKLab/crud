@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\{{model name}};
 
-use App\Models\{{model name}};
+use App\Http\Controllers\Controller;
+use App\Models\{{model name}}\{{model name}};
 use Illuminate\Http\Request;
 
 class {{model name}}Controller extends Controller

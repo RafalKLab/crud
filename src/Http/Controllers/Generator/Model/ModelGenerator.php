@@ -32,7 +32,7 @@ class ModelGenerator implements CrudGeneratorInterface
         $modelFile = $this->replaceFillable($modelFile, $fillable);
 
         $path = app_path();
-        $path = $path . '/Models/' . $transfer->getModelName() . '.php';
+        $path = $path . sprintf("/Models/%1\$s/%1\$s.php", $transfer->getModelName());
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $modelFile);
