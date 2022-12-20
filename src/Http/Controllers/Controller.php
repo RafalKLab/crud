@@ -7,7 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use JetBrains\PhpStorm\Pure;
-use Rklab\Crud\Http\Controllers\Repository\CrudRepository;
+use Rklab\Crud\Http\Controllers\Repository\Repository;
 
 class Controller extends BaseController
 {
@@ -18,8 +18,8 @@ class Controller extends BaseController
         return new CrudFactory();
     }
 
-    #[Pure] public function getCrudRepository(): CrudRepository
+    #[Pure] public function getRepository(): Repository
     {
-        return new CrudRepository();
+        return new Repository();
     }
 }

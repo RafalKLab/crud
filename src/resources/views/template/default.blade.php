@@ -218,7 +218,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="" class="nav-link">
+                                <a href="{{route('relationship.list')}}" class="nav-link">
                                     <i class="fa fa-list-alt nav-icon"></i>
                                     <p>Manage related models</p>
                                 </a>

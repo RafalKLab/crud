@@ -4,8 +4,9 @@ namespace Rklab\Crud\Http\Controllers\Repository;
 
 use Illuminate\Database\Eloquent\Collection;
 use Rklab\Crud\Models\Crud;
+use Rklab\Crud\Models\RelatedModel;
 
-class CrudRepository
+class Repository
 {
     /**
      * @return Collection
@@ -18,5 +19,10 @@ class CrudRepository
     public function getCrudById(int $id)
     {
         return Crud::find($id);
+    }
+
+    public function getRelatedModels(): Collection
+    {
+        return RelatedModel::all();
     }
 }

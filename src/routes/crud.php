@@ -18,4 +18,12 @@ Route::middleware('web')->group(function () {
 
     Route::get('/crud/relationship/create', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'createRelationship'])->name('relantionships');
     Route::post('/crud/relationship/create', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'storeRelationship']);
+
+    Route::get('/crud/relationship/list', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'index'])->name('relationship.list');
+    Route::get('/crud/relationship/show/{model}', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'show'])->name('relationship.show');
+
+    Route::get('/crud/relationship/get/assign/table/{ref_model_name}/{aim_model_name}/{id}', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'getAssignTable'])->name('relationship.assign.table');
+
+    Route::get('/crud/relationship/assign/{ref_model_name}/{ref_id}/{aim_model_name}/{aim_id}', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'assign'])->name('relationship.assign');
+    Route::get('/crud/relationship/un-assign/{ref_model_name}/{ref_id}/{aim_model_name}/{aim_id}', [\Rklab\Crud\Http\Controllers\ModelRelationshipController::class, 'unAssign'])->name('relationship.unAssign');
 });

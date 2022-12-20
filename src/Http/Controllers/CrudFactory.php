@@ -12,7 +12,7 @@ use Rklab\Crud\Http\Controllers\Generator\Model\ModelGenerator;
 use Rklab\Crud\Http\Controllers\Generator\View\ViewGenerator;
 use Rklab\Crud\Http\Controllers\Mapper\DtoMapper;
 use Rklab\Crud\Http\Controllers\ModelRelationshipManager\OneToManyRelationshipManager;
-use Rklab\Crud\Http\Controllers\Repository\CrudRepository;
+use Rklab\Crud\Http\Controllers\Repository\Repository;
 use Rklab\Crud\Http\Controllers\Writer\FileWriter;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 
@@ -38,7 +38,7 @@ class CrudFactory
     #[Pure] public function createDtoMapper(): DtoMapper
     {
         return new DtoMapper(
-            $this->getCrudRepository(),
+            $this->getRepository(),
         );
     }
 
@@ -88,9 +88,9 @@ class CrudFactory
         return new ModelRelationshipTransfer();
     }
 
-    #[Pure] private function getCrudRepository(): CrudRepository
+    #[Pure] private function getRepository(): Repository
     {
-        return new CrudRepository();
+        return new Repository();
     }
 
     #[Pure] public function createOneToManyRelationshipManager(): OneToManyRelationshipManager

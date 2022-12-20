@@ -7,17 +7,17 @@ use JetBrains\PhpStorm\Pure;
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
 use Rklab\Crud\dto\ModelRelationshipTransfer;
-use Rklab\Crud\Http\Controllers\Repository\CrudRepository;
+use Rklab\Crud\Http\Controllers\Repository\Repository;
 
 class DtoMapper implements DataMapperInterface
 {
-    private CrudRepository $repository;
+    private Repository $repository;
 
     /**
      * DtoMapper constructor.
-     * @param CrudRepository $repository
+     * @param Repository $repository
      */
-    public function __construct(CrudRepository $repository)
+    public function __construct(Repository $repository)
     {
         $this->repository = $repository;
     }

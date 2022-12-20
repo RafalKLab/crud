@@ -4,14 +4,93 @@ namespace Rklab\Crud\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Redirect;
 use Rklab\Crud\dto\ModelRelationshipTransfer;
 use Rklab\Crud\Models\RelatedModel;
 
 class ModelRelationshipController extends Controller
 {
+    public function index()
+    {
+        $relatedModels = $this->getRepository()->getRelatedModels();
+
+        return view("crud::relationship.index")->with('relatedModels', $relatedModels);
+    }
+
+    public function show(RelatedModel $model)
+    {
+        $fullyQualifiedAimModelClassName = $this->getFullyQualifiedClassName($model->aim_model);
+
+        $modelData = $fullyQualifiedAimModelClassName::all();
+        if ($modelData) {
+            $modelDataFieldNames = $modelData[0]->getFillable();
+
+            return view("crud::relationship.show")->with(compact('modelData', 'modelDataFieldNames', 'model'));
+
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    public function getAssignTable(Request $request)
+    {
+        $aimModelId = $request->id;
+        $aimModel = $request->aim_model_name;
+        $refModel = $request->ref_model_name;
+
+        $aimModelField = sprintf("%s_id", strtolower($aimModel));
+        $fullyQualifiedRefClassName = $this->getFullyQualifiedClassName($refModel);
+
+        $assignedData = $fullyQualifiedRefClassName::where($aimModelField, $aimModelId)->get();
+        $unAssignedData = $fullyQualifiedRefClassName::where($aimModelField, null)->get();
+
+        $refModelRecords = $fullyQualifiedRefClassName::skip(0)->take(1)->get();
+        if ($refModelRecords) {
+           $refModelFieldNames = $refModelRecords[0]->getFillable();
+
+           return view("crud::relationship.assign")->with(
+               compact(
+                   'assignedData',
+                   'unAssignedData',
+                   'refModelFieldNames',
+                   'aimModelId',
+                   'aimModel',
+                   'refModel',
+               )
+           );
+        } else {
+            return redirect()->route('dashboard');
+        }
+    }
+
+    public function assign(Request $request)
+    {
+        $fullyQualifiedRefClassName = $this->getFullyQualifiedClassName($request->ref_model_name);
+        $aimModelField = sprintf("%s_id", strtolower($request->aim_model_name));
+        $refModelId = $request->ref_id;
+        $aimModelId = $request->aim_id;
+
+        $fullyQualifiedRefClassName::where('id', $refModelId)->update([$aimModelField => $aimModelId]);
+
+        return Redirect::back();
+    }
+
+    public function unAssign(Request $request)
+    {
+        $fullyQualifiedRefClassName = $this->getFullyQualifiedClassName($request->ref_model_name);
+        $aimModelField = sprintf("%s_id", strtolower($request->aim_model_name));
+        $refModelId = $request->ref_id;
+        $aimModelId = $request->aim_id;
+
+        $fullyQualifiedRefClassName::where('id', $refModelId)->where($aimModelField, $aimModelId)
+            ->update([$aimModelField => null]);
+
+        return Redirect::back();
+    }
+
     public function createRelationship()
     {
-        $cruds = $this->getCrudRepository()->getCruds();
+        $cruds = $this->getRepository()->getCruds();
 
         return view("crud::relationship.form")->with('cruds', $cruds);
     }
@@ -67,5 +146,10 @@ class ModelRelationshipController extends Controller
         ];
 
         RelatedModel::create($params);
+    }
+
+    private function getFullyQualifiedClassName(string $modelName): string
+    {
+        return sprintf("App\Models\%1\$s\%1\$s", $modelName);
     }
 }
