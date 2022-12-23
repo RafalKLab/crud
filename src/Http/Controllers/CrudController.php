@@ -55,7 +55,7 @@ class CrudController extends Controller
             'view' => $this->generateOnlyView($transfer),
         };
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success','Successfully generated new CRUD.');
     }
 
     private function saveCrud(CrudParametersTransfer $transfer): void

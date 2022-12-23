@@ -28,7 +28,7 @@ class ModelRelationshipController extends Controller
             return view("crud::relationship.show")->with(compact('modelData', 'modelDataFieldNames', 'model'));
 
         } else {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('warning','Model data not found!.');
         }
     }
 
@@ -59,7 +59,7 @@ class ModelRelationshipController extends Controller
                )
            );
         } else {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('warning','Model data not found!.');
         }
     }
 
@@ -72,7 +72,7 @@ class ModelRelationshipController extends Controller
 
         $fullyQualifiedRefClassName::where('id', $refModelId)->update([$aimModelField => $aimModelId]);
 
-        return Redirect::back();
+        return Redirect::back()->with('success',"Model object was assigned.");
     }
 
     public function unAssign(Request $request)
@@ -85,7 +85,7 @@ class ModelRelationshipController extends Controller
         $fullyQualifiedRefClassName::where('id', $refModelId)->where($aimModelField, $aimModelId)
             ->update([$aimModelField => null]);
 
-        return Redirect::back();
+        return Redirect::back()->with('success',"Model object was unassigned.");
     }
 
     public function createRelationship()
@@ -114,7 +114,7 @@ class ModelRelationshipController extends Controller
 
         $this->saveRelationEntry($transfer);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('dashboard')->with('success', 'New relation was created!');
     }
 
     private function createOneToManyRelationship(ModelRelationshipTransfer $transfer)
