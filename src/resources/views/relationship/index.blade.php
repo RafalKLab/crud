@@ -24,5 +24,6 @@
             @endforeach
             </tbody>
         </table>
+        {{ $relatedModels->links() }}
     </div>
 @endsection

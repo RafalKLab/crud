@@ -5,6 +5,7 @@ namespace Rklab\Crud\Http\Controllers;
 use JetBrains\PhpStorm\Pure;
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\ModelRelationshipTransfer;
+use Rklab\Crud\Http\Controllers\Config\CrudConfig;
 use Rklab\Crud\Http\Controllers\Generator\Controller\ControllerGenerator;
 use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorCollection;
 use Rklab\Crud\Http\Controllers\Generator\Migration\MigrationGenerator;

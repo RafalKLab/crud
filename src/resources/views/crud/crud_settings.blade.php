@@ -51,14 +51,14 @@
                     @for ($i = 1; $i <= $number_of_fields; $i++)
                         <div class="row mb-2">
                             <div class="col-md-4">
-                                <input type="text" class="form-control" name="field_name_{{$i}}"
-                                       value="{{Request::old("field_name_$i") ? : ''}}"
-                                >
-                                @if ($errors->has("field_name_$i"))
-                                    <span class="help-block text-danger">
+                                    <input type="text" class="form-control" name="field_name_{{$i}}" placeholder="field"
+                                           value="{{Request::old("field_name_$i") ? : ''}}"
+                                    >
+                                    @if ($errors->has("field_name_$i"))
+                                        <span class="help-block text-danger">
                                  {{ $errors->first("field_name_$i")}}
                                   </span>
-                                @endif
+                                    @endif
                             </div>
                             <div class="col-md-2">
                                 <select class="form-select" aria-label="select type" name="select_type_{{$i}}">

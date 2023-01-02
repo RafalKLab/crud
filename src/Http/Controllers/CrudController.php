@@ -2,6 +2,8 @@
 
 namespace Rklab\Crud\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
@@ -11,12 +13,20 @@ use Rklab\Crud\Models\Crud;
 
 class CrudController extends Controller
 {
-    public function prepareFields()
+    /**
+     * @return View
+     */
+    public function prepareFields(): View
     {
         return view('crud::crud.crud_fields');
     }
 
-    public function generateFields(Request $request)
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function generateFields(Request $request): RedirectResponse
     {
         $this->validate($request, [
             'number_of_fields' => 'numeric|min:1|max:20',
@@ -26,12 +36,20 @@ class CrudController extends Controller
         return redirect()->route('generate');
     }
 
-    public function prepareCrud()
+    /**
+     * @return View
+     */
+    public function prepareCrud(): View
     {
         return view("crud::crud.crud_settings");
     }
 
-    public function generateCrud(Request $request)
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse
+     */
+    public function generateCrud(Request $request): RedirectResponse
     {
         for ($i = 1; $i <= $request->input('fieldItterator'); $i++) {
             $fieldName = 'field_name_' . $i;
@@ -55,9 +73,13 @@ class CrudController extends Controller
             'view' => $this->generateOnlyView($transfer),
         };
 
-        return redirect()->route('dashboard')->with('success','Successfully generated new CRUD.');
+        return redirect()->route('dashboard')
+            ->with('success','Successfully generated new CRUD.');
     }
 
+    /**
+     * @param CrudParametersTransfer $transfer
+     */
     private function saveCrud(CrudParametersTransfer $transfer): void
     {
         $params = [
@@ -69,13 +91,25 @@ class CrudController extends Controller
         Crud::create($params);
     }
 
-    public function listCrud()
+    /**
+     * @return View
+     */
+    public function listCrud(): View
     {
-        $cruds = Crud::paginate(10);
+       $itemsPerPage = $this->getCrudFactory()
+            ->createCrudConfig()
+            ->getCrudListPagination();
+
+        $cruds = Crud::orderBy('id', 'desc')->paginate($itemsPerPage);
 
         return view('crud::crud.crud_list')->with('cruds', $cruds);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return CrudParametersTransfer
+     */
     private function getTransfer(Request $request): CrudParametersTransfer
     {
         return $this->getCrudFactory()->createDtoMapper()->mapMigrationParametersToDto(
@@ -94,6 +128,11 @@ class CrudController extends Controller
             ->getGenerators();
     }
 
+    /**
+     * @param CrudParametersTransfer $transfer
+     *
+     * @return CrudParametersTransfer
+     */
     private function generateOnlyMigration(CrudParametersTransfer $transfer): CrudParametersTransfer
     {
         $this->getCrudFactory()->createMigrationGenerator()->generate($transfer);
@@ -101,6 +140,11 @@ class CrudController extends Controller
         return $transfer;
     }
 
+    /**
+     * @param CrudParametersTransfer $transfer
+     *
+     * @return CrudParametersTransfer
+     */
     private function generateOnlyModel(CrudParametersTransfer $transfer): CrudParametersTransfer
     {
         $this->getCrudFactory()->createModelGenerator()->generate($transfer);
@@ -108,6 +152,11 @@ class CrudController extends Controller
         return $transfer;
     }
 
+    /**
+     * @param CrudParametersTransfer $transfer
+     *
+     * @return CrudParametersTransfer
+     */
     private function generateOnlyController(CrudParametersTransfer $transfer): CrudParametersTransfer
     {
         $this->getCrudFactory()->createControllerGenerator()->generate($transfer);
@@ -115,13 +164,25 @@ class CrudController extends Controller
         return $transfer;
     }
 
+    /**
+     * @param CrudParametersTransfer $transfer
+     *
+     * @return CrudParametersTransfer
+     */
     private function generateOnlyView(CrudParametersTransfer $transfer): CrudParametersTransfer
     {
-        $this->getCrudFactory()->createViewGenerator()->generate($transfer);
+        $this->getCrudFactory()
+            ->createViewGenerator()
+            ->generate($transfer);
 
         return $transfer;
     }
 
+    /**
+     * @param CrudParametersTransfer $transfer
+     *
+     * @return CrudParametersTransfer
+     */
     private function generateFullCrud(CrudParametersTransfer $transfer): CrudParametersTransfer
     {
         foreach ($this->getCrudGenerators() as $generator) {

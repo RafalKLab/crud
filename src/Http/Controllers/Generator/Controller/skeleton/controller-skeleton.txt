@@ -4,23 +4,39 @@ namespace App\Http\Controllers\{{model name}};
 
 use App\Http\Controllers\Controller;
 use App\Models\{{model name}}\{{model name}};
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Rklab\Crud\Http\Controllers\Config\CrudConfig;
 
 class {{model name}}Controller extends Controller
 {
-    public function index()
+    /**
+    * @return View
+    */
+    public function index(): View
     {
-        ${{model name lowercase}}s = {{model name}}::paginate(10);
+        $itemsPerPage = $this->getItemsPerPage();
+
+        ${{model name lowercase}}s = {{model name}}::paginate($itemsPerPage);
 
         return view('{{model name lowercase}}.index')->with('{{model name lowercase}}s', ${{model name lowercase}}s);
     }
 
-    public function create()
+    /**
+    * @return View
+    */
+    public function create(): View
     {
         return view('{{model name lowercase}}.form');
     }
 
-    public function store(Request $request)
+    /**
+    * @param Request $request
+    *
+    * @return RedirectResponse
+    */
+    public function store(Request $request): RedirectResponse
     {
         {{validation}}
 
@@ -29,17 +45,32 @@ class {{model name}}Controller extends Controller
         return redirect()->route('{{model name lowercase}}s.index')->with('success','Successfully added a new {{model name}}.');
     }
 
-    public function show({{model name}} ${{model name lowercase}})
+    /**
+    * @param {{model name}} ${{model name lowercase}}
+    *
+    * @return View
+    */
+    public function show({{model name}} ${{model name lowercase}}): View
     {
         return view('{{model name lowercase}}.show', compact('{{model name lowercase}}'));
     }
 
-    public function edit({{model name}} ${{model name lowercase}})
+    /**
+    * @param {{model name}} ${{model name lowercase}}
+    *
+    * @return View
+    */
+    public function edit({{model name}} ${{model name lowercase}}): View
     {
         return view('{{model name lowercase}}.form', compact('{{model name lowercase}}'));
     }
 
-    public function update(Request $request, {{model name}} ${{model name lowercase}})
+    /**
+    * @param {{model name}} ${{model name lowercase}}
+    *
+    * @return RedirectResponse
+    */
+    public function update(Request $request, {{model name}} ${{model name lowercase}}): RedirectResponse
     {
         {{validation}}
 
@@ -48,10 +79,24 @@ class {{model name}}Controller extends Controller
         return redirect()->route('{{model name lowercase}}s.index');
     }
 
-    public function destroy({{model name}} ${{model name lowercase}})
+    /**
+    * @param {{model name}} ${{model name lowercase}}
+    *
+    * @return RedirectResponse
+    */
+    public function destroy({{model name}} ${{model name lowercase}}): RedirectResponse
     {
         ${{model name lowercase}}->delete();
 
         return redirect()->route('{{model name lowercase}}s.index');
+    }
+
+    /**
+    * @return int
+    */
+    private function getItemsPerPage(): int
+    {
+        return (new CrudConfig())
+        ->getCrudElementPagination();
     }
 }

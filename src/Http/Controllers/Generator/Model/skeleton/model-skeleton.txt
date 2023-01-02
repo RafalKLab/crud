@@ -21,6 +21,7 @@ class {{modelName}} extends Model
      */
     protected $fillable = {{fillable}};
 
+    // This is auto generated tag do not delete it
     // model relationship
 
 }

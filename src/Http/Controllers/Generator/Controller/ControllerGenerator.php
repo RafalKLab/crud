@@ -4,7 +4,7 @@ namespace Rklab\Crud\Http\Controllers\Generator\Controller;
 
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
-use Rklab\Crud\Http\Controllers\CrudConfig;
+use Rklab\Crud\Http\Controllers\Config\CrudConfig;
 use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Http\Controllers\Writer\FileWriterInterface;
 

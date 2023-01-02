@@ -8,6 +8,11 @@ Route::middleware('web')->group(function () {
         return view('crud::dashboard.index');
     })->name('dashboard');
 
+    Route::get('/crud/pagination', [\Rklab\Crud\Http\Controllers\Controller::class, 'indexPagination'])->name('settings.pagination');
+    Route::post('/crud/pagination', [\Rklab\Crud\Http\Controllers\Controller::class, 'setPagination']);
+
+    Route::post('/crud/list', [\Rklab\Crud\Http\Controllers\CrudController::class, 'listCrud']);
+
     Route::get('/crud/list', [\Rklab\Crud\Http\Controllers\CrudController::class, 'listCrud'])->name('crud.list');
 
     Route::get('/crud/generate', [\Rklab\Crud\Http\Controllers\CrudController::class, 'prepareCrud'])->name('generate');

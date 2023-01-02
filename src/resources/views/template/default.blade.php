@@ -62,9 +62,6 @@
                             <i class="nav-icon fa fa-list"></i>
                             <p>
                                 CRUD list
-                                @if(session()->has('success'))
-                                    <span class="right badge badge-danger">New</span>
-                                @endif
                             </p>
                         </a>
                     </li>
@@ -88,6 +85,24 @@
                                 <a href="{{route('relationship.list')}}" class="nav-link">
                                     <i class="fa fa-list-alt nav-icon"></i>
                                     <p>Manage related models</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fa fa-cog"></i>
+                            <p>
+                                Settings
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{route('settings.pagination')}}" class="nav-link">
+                                    <i class="fa fa-list-ol  nav-icon"></i>
+                                    <p>Set pagination</p>
                                 </a>
                             </li>
                         </ul>
