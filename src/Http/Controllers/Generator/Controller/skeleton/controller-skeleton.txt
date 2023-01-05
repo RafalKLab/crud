@@ -20,7 +20,7 @@ class {{model name}}Controller extends Controller
 
         ${{model name lowercase}}s = {{model name}}::paginate($itemsPerPage);
 
-        return view('{{model name lowercase}}.index')->with('{{model name lowercase}}s', ${{model name lowercase}}s);
+        return view('{{model name}}.index')->with('{{model name lowercase}}s', ${{model name lowercase}}s);
     }
 
     /**
@@ -28,7 +28,7 @@ class {{model name}}Controller extends Controller
     */
     public function create(): View
     {
-        return view('{{model name lowercase}}.form');
+        return view('{{model name}}.form');
     }
 
     /**
@@ -52,7 +52,7 @@ class {{model name}}Controller extends Controller
     */
     public function show({{model name}} ${{model name lowercase}}): View
     {
-        return view('{{model name lowercase}}.show', compact('{{model name lowercase}}'));
+        return view('{{model name}}.show', compact('{{model name lowercase}}'));
     }
 
     /**
@@ -62,7 +62,7 @@ class {{model name}}Controller extends Controller
     */
     public function edit({{model name}} ${{model name lowercase}}): View
     {
-        return view('{{model name lowercase}}.form', compact('{{model name lowercase}}'));
+        return view('{{model name}}.form', compact('{{model name lowercase}}'));
     }
 
     /**
