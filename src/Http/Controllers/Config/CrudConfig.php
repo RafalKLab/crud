@@ -22,7 +22,6 @@ class CrudConfig
         $this->pagination = json_decode(file_get_contents(__DIR__.'/config.json'), true);
     }
 
-
     public function getDefaultRoutePrefix(): string
     {
         return self::ROUTE_PREFIX;

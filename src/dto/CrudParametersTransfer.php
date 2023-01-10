@@ -27,7 +27,6 @@ class CrudParametersTransfer
         $this->validationRules = $validationRules;
     }
 
-
     /**
      * @return string
      */

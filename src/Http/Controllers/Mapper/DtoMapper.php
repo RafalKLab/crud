@@ -3,7 +3,6 @@
 namespace Rklab\Crud\Http\Controllers\Mapper;
 
 use Illuminate\Http\Request;
-use JetBrains\PhpStorm\Pure;
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\dto\FieldTransfer;
 use Rklab\Crud\dto\ModelRelationshipTransfer;
@@ -15,6 +14,7 @@ class DtoMapper implements DataMapperInterface
 
     /**
      * DtoMapper constructor.
+     *
      * @param Repository $repository
      */
     public function __construct(Repository $repository)
@@ -22,23 +22,22 @@ class DtoMapper implements DataMapperInterface
         $this->repository = $repository;
     }
 
-    public function mapMigrationParametersToDto(CrudParametersTransfer $transfer, Request $request,): CrudParametersTransfer
+    public function mapMigrationParametersToDto(CrudParametersTransfer $transfer, Request $request): CrudParametersTransfer
     {
         $transfer->setTableName($request->input('table_name'));
         $transfer->setModelName($request->input('model_name'));
         $transfer->setGenerateOption($request->input('generate_option'));
-        $transfer->setRoutePrefix($request->input('route_prefix') ? : '');
+        $transfer->setRoutePrefix($request->input('route_prefix') ?: '');
         $arr = [];
         $validations = [];
         $iterrator = (int) $request->input('fieldItterator');
 
         for ($i = 1; $i <= $iterrator; $i++) {
+            $fieldName = 'field_name_'.$i;
+            $fieldType = 'select_type_'.$i;
 
-            $fieldName = 'field_name_' . $i;
-            $fieldType = 'select_type_'. $i;
-
-            $require = 'required_' . $i;
-            $unique = 'unique_' . $i;
+            $require = 'required_'.$i;
+            $unique = 'unique_'.$i;
 
             $rules = [];
 

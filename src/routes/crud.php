@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('web')->group(function () {
-
     Route::get('/crud', function () {
         return view('crud::dashboard.index');
     })->name('dashboard');

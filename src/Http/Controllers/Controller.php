@@ -15,25 +15,29 @@ use Rklab\Crud\Http\Controllers\Repository\Repository;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private CrudConfig $config;
 
-    #[Pure] public function __construct()
-    {
-        $this->config = $this->getCrudFactory()->createCrudConfig();
-    }
+    #[Pure]
+ public function __construct()
+ {
+     $this->config = $this->getCrudFactory()->createCrudConfig();
+ }
 
+    #[Pure]
+ public function getCrudFactory(): CrudFactory
+ {
+     return new CrudFactory();
+ }
 
-    #[Pure] public function getCrudFactory(): CrudFactory
-    {
-        return new CrudFactory();
-    }
-
-    #[Pure] public function getRepository(): Repository
-    {
-        return new Repository();
-    }
+    #[Pure]
+ public function getRepository(): Repository
+ {
+     return new Repository();
+ }
 
     public function indexPagination(): View
     {
@@ -47,15 +51,16 @@ class Controller extends BaseController
     public function setPagination(Request $request): RedirectResponse
     {
         $this->validate($request, [
-            'crud_list_pagination' => 'numeric|min:1|max:100|nullable',
+            'crud_list_pagination'          => 'numeric|min:1|max:100|nullable',
             'relationships_list_pagination' => 'numeric|min:1|max:100|nullable',
-            'crud_elements_pagination' => 'numeric|min:1|max:100|nullable',
+            'crud_elements_pagination'      => 'numeric|min:1|max:100|nullable',
         ]);
 
         $params = $this->config->getPaginationData();
         foreach ($request->except(['_token']) as $pagination => $value) {
-            if ($value)
+            if ($value) {
                 $params['pagination'][$pagination] = $value;
+            }
         }
 
         $jsonData = json_encode($params);

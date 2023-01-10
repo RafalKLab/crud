@@ -13,6 +13,7 @@ class ViewGenerator implements CrudGeneratorInterface
 
     /**
      * ViewGenerator constructor.
+     *
      * @param FileWriterInterface $writer
      */
     public function __construct(FileWriterInterface $writer)
@@ -32,7 +33,7 @@ class ViewGenerator implements CrudGeneratorInterface
         $modelName = $transfer->getModelName();
         $modelNameLowercase = strtolower($modelName);
 
-        $indexFile = file_get_contents(__DIR__ . '/skeleton/index-skeleton.txt');
+        $indexFile = file_get_contents(__DIR__.'/skeleton/index-skeleton.txt');
 
         $indexFile = str_replace('{{model name lowercase}}', $modelNameLowercase, $indexFile);
 
@@ -47,9 +48,8 @@ class ViewGenerator implements CrudGeneratorInterface
         $indexFile = str_replace('{{table fields}}', $fieldNames, $indexFile);
         $indexFile = str_replace('{{table fields data}', $fieldData, $indexFile);
 
-
         $path = resource_path();
-        $path = $path . '/views/' . $modelName . '/' . 'index.blade.php';
+        $path = $path.'/views/'.$modelName.'/'.'index.blade.php';
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $indexFile);
@@ -60,7 +60,7 @@ class ViewGenerator implements CrudGeneratorInterface
         $modelName = $transfer->getModelName();
         $modelNameLowercase = strtolower($modelName);
 
-        $showFile = file_get_contents(__DIR__ . '/skeleton/show-skeleton.txt');
+        $showFile = file_get_contents(__DIR__.'/skeleton/show-skeleton.txt');
         $showFile = str_replace('{{model name lowercase}}', $modelNameLowercase, $showFile);
 
         $modelFields = '';
@@ -75,7 +75,7 @@ class ViewGenerator implements CrudGeneratorInterface
         $showFile = str_replace('{{model fields data}}', $modelFieldsData, $showFile);
 
         $path = resource_path();
-        $path = $path . '/views/' . $modelName . '/' . 'show.blade.php';
+        $path = $path.'/views/'.$modelName.'/'.'show.blade.php';
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $showFile);
@@ -86,7 +86,7 @@ class ViewGenerator implements CrudGeneratorInterface
         $modelName = $transfer->getModelName();
         $modelNameLowercase = strtolower($modelName);
 
-        $formFile = file_get_contents(__DIR__ . '/skeleton/form-skeleton.txt');
+        $formFile = file_get_contents(__DIR__.'/skeleton/form-skeleton.txt');
         $formFile = str_replace('{{model name lowercase}}', $modelNameLowercase, $formFile);
 
         $formInputs = '';
@@ -120,7 +120,7 @@ class ViewGenerator implements CrudGeneratorInterface
         $formFile = str_replace('{{form inputs}}', $formInputs, $formFile);
 
         $path = resource_path();
-        $path = $path . '/views/' . $modelName . '/' . 'form.blade.php';
+        $path = $path.'/views/'.$modelName.'/'.'form.blade.php';
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $formFile);
@@ -128,7 +128,7 @@ class ViewGenerator implements CrudGeneratorInterface
 
     /**
      * @param FieldTransfer $field
-     * @param string $modelNameLowercase
+     * @param string        $modelNameLowercase
      *
      * @return string
      */
@@ -148,7 +148,7 @@ class ViewGenerator implements CrudGeneratorInterface
 
     /**
      * @param FieldTransfer $field
-     * @param string $modelNameLowercase
+     * @param string        $modelNameLowercase
      *
      * @return string
      */

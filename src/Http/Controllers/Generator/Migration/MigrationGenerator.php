@@ -14,6 +14,7 @@ class MigrationGenerator implements CrudGeneratorInterface
 
     /**
      * MigrationGenerator constructor.
+     *
      * @param FileWriterInterface $writer
      */
     public function __construct(FileWriterInterface $writer)
@@ -23,7 +24,7 @@ class MigrationGenerator implements CrudGeneratorInterface
 
     public function generate(CrudParametersTransfer $transfer): void
     {
-        $migrationFile = file_get_contents(__DIR__ . '/skeleton/migration-skeleton.txt');
+        $migrationFile = file_get_contents(__DIR__.'/skeleton/migration-skeleton.txt');
 
         $upMethod = $this->addUpMethodHeader($transfer->getTableName());
         $upMethod .= $this->addFields($transfer->getTableFields());
@@ -36,24 +37,24 @@ class MigrationGenerator implements CrudGeneratorInterface
 
         $datePrefix = date('Y_m_d_His');
 
-        $destination = database_path('/migrations/') . $datePrefix . '_create_' . $transfer->getTableName() . '_table.php';
+        $destination = database_path('/migrations/').$datePrefix.'_create_'.$transfer->getTableName().'_table.php';
 
         $this->writer->createDirectory($destination);
         $this->writer->putTextInFile($destination, $migrationFile);
     }
 
-    public function generateRelationshipMigration(ModelRelationshipTransfer $transfer){
-
+    public function generateRelationshipMigration(ModelRelationshipTransfer $transfer)
+    {
         $aimModelNameLowercase = strtolower($transfer->getAimModelName());
 
-        $migrationFile = file_get_contents(__DIR__ . '/skeleton/one-to-many-migration-skeleton.txt');
+        $migrationFile = file_get_contents(__DIR__.'/skeleton/one-to-many-migration-skeleton.txt');
         $migrationFile = str_replace('{{table name}}', $transfer->getRefModelTableName(), $migrationFile);
 
         $relationField = sprintf("\$table->unsignedBigInteger('%s_id')->nullable(); \n", $aimModelNameLowercase);
         $migrationFile = str_replace('{{relation field}}', $relationField, $migrationFile);
 
         $datePrefix = date('Y_m_d_His');
-        $destination = database_path('/migrations/') . $datePrefix . sprintf("_add_%s_relation_to_%s_table.php", $aimModelNameLowercase, $transfer->getRefModelTableName());
+        $destination = database_path('/migrations/').$datePrefix.sprintf('_add_%s_relation_to_%s_table.php', $aimModelNameLowercase, $transfer->getRefModelTableName());
 
         $this->writer->createDirectory($destination);
         $this->writer->putTextInFile($destination, $migrationFile);
@@ -72,14 +73,14 @@ class MigrationGenerator implements CrudGeneratorInterface
     {
         $fields = '';
 
-        /** @var  $fieldTransfer */
+        /** @var $fieldTransfer */
         foreach ($tableFields as $fieldTransfer) {
             $field = match ($fieldTransfer->getFieldType()) {
-                'int' => $this->putIntField($fieldTransfer),
+                'int'    => $this->putIntField($fieldTransfer),
                 'string' => $this->putStringField($fieldTransfer),
-                'date' => $this->putDateField($fieldTransfer),
+                'date'   => $this->putDateField($fieldTransfer),
             };
-            $fields.=$field;
+            $fields .= $field;
         }
 
         return $fields;
@@ -103,7 +104,7 @@ class MigrationGenerator implements CrudGeneratorInterface
         $validations = $fieldTransfer->getFieldValidations();
 
         if (in_array('required', $validations)) {
-            return sprintf('%s$table->integer("%s");',"\n", $name);
+            return sprintf('%s$table->integer("%s");', "\n", $name);
         } else {
             return sprintf('%s$table->integer("%s")->nullable();', "\n", $name);
         }
@@ -133,4 +134,3 @@ class MigrationGenerator implements CrudGeneratorInterface
         }
     }
 }
-
