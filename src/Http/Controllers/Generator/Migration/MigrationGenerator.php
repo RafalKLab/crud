@@ -77,7 +77,7 @@ class MigrationGenerator implements CrudGeneratorInterface
             $field = match ($fieldTransfer->getFieldType()) {
                 'int' => $this->putIntField($fieldTransfer),
                 'string' => $this->putStringField($fieldTransfer),
-                'bool' => $this->putBoolField($fieldTransfer),
+                'date' => $this->putDateField($fieldTransfer),
             };
             $fields.=$field;
         }
@@ -121,15 +121,15 @@ class MigrationGenerator implements CrudGeneratorInterface
         }
     }
 
-    private function putBoolField(FieldTransfer $fieldTransfer): string
+    private function putDateField(FieldTransfer $fieldTransfer): string
     {
         $name = $fieldTransfer->getFieldName();
         $validations = $fieldTransfer->getFieldValidations();
 
         if (in_array('required', $validations)) {
-            return sprintf('%s$table->boolean("%s");', "\n", $name);
+            return sprintf('%s$table->date("%s");', "\n", $name);
         } else {
-            return sprintf('%s$table->boolean("%s")->nullable();', "\n", $name);
+            return sprintf('%s$table->date("%s")->nullable();', "\n", $name);
         }
     }
 }

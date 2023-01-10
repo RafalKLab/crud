@@ -99,11 +99,15 @@ class ViewGenerator implements CrudGeneratorInterface
             $formInputs .= "\n";
             $formInputs .= '<div class="col-sm-6">';
             $formInputs .= "\n";
-            $formInputs .= sprintf("<input type='text' class='form-control' name='%s' id='%s'", $fieldName, $fieldName);
-            $formInputs .= "\n";
-            $formInputs .= sprintf("value='@isset($%s){{ $%s->%s }}@endisset", $modelNameLowercase, $modelNameLowercase, $fieldName);
-            $formInputs .= "\n";
-            $formInputs .= sprintf("{{Request::old('%s') ? : ''}}'>", $fieldName);
+
+            switch ($field->getFieldType()) {
+                case 'date':
+                    $formInputs .= $this->putInputTypeDate($field, $modelNameLowercase);
+                    break;
+                default:
+                    $formInputs .= $this->putInputTypeText($field, $modelNameLowercase);
+            }
+
             $formInputs .= sprintf("@if(\$errors->has('%s'))", $fieldName);
             $formInputs .= '<span class="text-danger">';
             $formInputs .= sprintf("{{\$errors->first('%s')}}", $fieldName);
@@ -120,5 +124,48 @@ class ViewGenerator implements CrudGeneratorInterface
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $formFile);
+    }
+
+    /**
+     * @param FieldTransfer $field
+     * @param string $modelNameLowercase
+     *
+     * @return string
+     */
+    private function putInputTypeText(FieldTransfer $field, string $modelNameLowercase): string
+    {
+        $fieldName = $field->getFieldName();
+
+        $formInputs = '';
+        $formInputs .= sprintf("<input type='text' class='form-control' name='%s' id='%s'", $fieldName, $fieldName);
+        $formInputs .= "\n";
+        $formInputs .= sprintf("value='@isset($%s){{ $%s->%s }}@endisset", $modelNameLowercase, $modelNameLowercase, $fieldName);
+        $formInputs .= "\n";
+        $formInputs .= sprintf("{{Request::old('%s') ? : ''}}'>", $fieldName);
+
+        return $formInputs;
+    }
+
+    /**
+     * @param FieldTransfer $field
+     * @param string $modelNameLowercase
+     *
+     * @return string
+     */
+    private function putInputTypeDate(FieldTransfer $field, string $modelNameLowercase): string
+    {
+        $fieldName = $field->getFieldName();
+
+        $formInputs = '';
+        $formInputs .= sprintf("<input type='date' class='form-control' name='%s' id='%s'", $fieldName, $fieldName);
+        $formInputs .= "\n";
+        $formInputs .= sprintf(
+            "value='@isset($%s){{ \Carbon\Carbon::parse( $%s->%s )->format('Y-m-d') }}@endisset'>",
+            $modelNameLowercase,
+            $modelNameLowercase,
+            $fieldName
+        );
+
+        return $formInputs;
     }
 }

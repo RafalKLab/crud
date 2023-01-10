@@ -23,6 +23,8 @@
                     </div>
                     <div class="form-group">
                         <label for="model_name">Model name</label>
+                        <br>
+                        <small>* Avoid reserved words that can conflict with model methods such as: create, update, delete, get, fill, save.</small>
                         <input type="text" class="form-control" id="model_name" name="model_name"
                                placeholder="Enter model name"
                                value="{{Request::old('model_name') ? : ''}}"
@@ -48,6 +50,9 @@
                     <div class="form-group">
                         <input type="hidden" id="fieldItterator" name="fieldItterator" value="{{$number_of_fields}}">
                     </div>
+                    <small>* Id, foreign key and time of creation and updating fields are being added automatically</small>
+                    <br>
+                    <hr>
                     @for ($i = 1; $i <= $number_of_fields; $i++)
                         <div class="row mb-2">
                             <div class="col-md-4">
@@ -65,6 +70,7 @@
                                     <option value="{{Request::old("select_type_$i") ? : ''}}" selected>{{Request::old("select_type_$i") ? : '---type---'}}</option>
                                     <option value="int">int</option>
                                     <option value="string">string</option>
+                                    <option value="date">date</option>
                                 </select>
                                 @if ($errors->has("select_type_$i"))
                                     <span class="help-block text-danger">

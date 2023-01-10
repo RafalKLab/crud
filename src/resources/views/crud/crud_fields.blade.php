@@ -7,6 +7,9 @@
                 <form method="post">
                     <div class="form-group">
                         <label for="table_name">Number of fields</label>
+                        <br>
+                        <small>* Id, foreign key and time of creation and updating fields are being added automatically</small>
+                        <hr>
                         <input type="text" class="form-control" id="number_of_fields" name="number_of_fields"
                                placeholder="How many table fields needs to be generated ?">
                         @if ($errors->has('number_of_fields'))

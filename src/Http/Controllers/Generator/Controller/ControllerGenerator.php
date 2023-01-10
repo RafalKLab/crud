@@ -51,9 +51,13 @@ class ControllerGenerator implements CrudGeneratorInterface
                 };
             }
 
+            if (!in_array('required', $field->getFieldValidations()))
+                $rule .= 'nullable|';
+
             $rule .= match ($field->getFieldType()) {
                 'int' => "numeric|min:1|max:2147483647',",
                 'string' => "max:255',",
+                'date' => "date',"
             };
 
             $rule .= "\n";
@@ -61,29 +65,28 @@ class ControllerGenerator implements CrudGeneratorInterface
             $validation .= $rule;
 
         }
-            $validation .= ']);';
+        $validation .= ']);';
 
         $controllerFile = str_replace('{{validation}}', $validation, $controllerFile);
 
+        $path = app_path();
+        $path = $path . sprintf("/Http/Controllers/%1\$s/%1\$sController.php", $modelName);
 
-            $path = app_path();
-            $path = $path . sprintf("/Http/Controllers/%1\$s/%1\$sController.php", $modelName);
+        $this->writer->createDirectory($path);
+        $this->writer->putTextInFile($path, $controllerFile);
 
-            $this->writer->createDirectory($path);
-            $this->writer->putTextInFile($path, $controllerFile);
+        $routePath = base_path('routes/web.php');
+        $routes = file_get_contents($routePath);
 
-            $routePath = base_path('routes/web.php');
-            $routes = file_get_contents($routePath);
+        $routePrefix = $this->getRoutePrefix($transfer);
 
-            $routePrefix = $this->getRoutePrefix($transfer);
+        $routes .= sprintf(self::ROUTE_SIGNATURE, $routePrefix, $modelNamelowercase, $modelName);
 
-            $routes .= sprintf(self::ROUTE_SIGNATURE, $routePrefix, $modelNamelowercase, $modelName);
-
-            $this->writer->putTextInFile($routePath, $routes);
+        $this->writer->putTextInFile($routePath, $routes);
     }
 
     private function getRoutePrefix(CrudParametersTransfer $transfer): string
     {
-        return $transfer->getRoutePrefix() ? : $this->config->getDefaultRoutePrefix();
+        return $transfer->getRoutePrefix() ?: $this->config->getDefaultRoutePrefix();
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 use Rklab\Crud\dto\CrudParametersTransfer;
 use Rklab\Crud\Http\Controllers\Generator\CrudGeneratorInterface;
 use Rklab\Crud\Models\Crud;
@@ -55,10 +56,21 @@ class CrudController extends Controller
             $fieldName = 'field_name_' . $i;
             $selectType = 'select_type_' . $i;
             $this->validate($request, [
-                $fieldName => 'required|alpha_dash|max:100',
+                $fieldName => [
+                    'required',
+                    'alpha_dash',
+                    'max:100',
+                    Rule::notIn(['id', 'created_at', 'updated_at']),
+                ],
                 $selectType => 'required|alpha_dash|max:100',
                 'table_name' => 'required|alpha|max:25|unique:cruds',
-                'model_name' => 'required|alpha|max:25|unique:cruds',
+                'model_name' => [
+                    'required',
+                    'alpha',
+                    'max:25',
+                    'unique:cruds',
+                    Rule::notIn(['create', 'update', 'delete', 'save', 'get']),
+                ],
                 'route_prefix' => 'nullable|alpha|max:100|not_in:crud',
             ]);
         }
