@@ -47,4 +47,9 @@ class CrudConfig
     {
         return $this->pagination[self::PAGINATION][self::CRUD_ELEMENTS_LIST] ? $this->pagination[self::PAGINATION][self::CRUD_ELEMENTS_LIST] : $this->getDefaultPagination();
     }
+
+    public function getPaginationData(): array
+    {
+        return $this->pagination;
+    }
 }

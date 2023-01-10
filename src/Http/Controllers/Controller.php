@@ -10,11 +10,20 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use JetBrains\PhpStorm\Pure;
+use Rklab\Crud\Http\Controllers\Config\CrudConfig;
 use Rklab\Crud\Http\Controllers\Repository\Repository;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    private CrudConfig $config;
+
+    #[Pure] public function __construct()
+    {
+        $this->config = $this->getCrudFactory()->createCrudConfig();
+    }
+
 
     #[Pure] public function getCrudFactory(): CrudFactory
     {
@@ -28,11 +37,9 @@ class Controller extends BaseController
 
     public function indexPagination(): View
     {
-        $config = $this->getCrudFactory()->createCrudConfig();
-
-        $crudListPagination = $config->getCrudListPagination();
-        $relationshipListPagination = $config->getRelationshipListPaginaton();
-        $crudElementsPagination = $config->getCrudElementPagination();
+        $crudListPagination = $this->config->getCrudListPagination();
+        $relationshipListPagination = $this->config->getRelationshipListPaginaton();
+        $crudElementsPagination = $this->config->getCrudElementPagination();
 
         return view('crud::dashboard.pagination')->with(compact('crudListPagination', 'relationshipListPagination', 'crudElementsPagination'));
     }
@@ -40,14 +47,18 @@ class Controller extends BaseController
     public function setPagination(Request $request): RedirectResponse
     {
         $this->validate($request, [
-            'crud_list_pagination' => 'numeric|min:1|max:100',
-            'relationships_list_pagination' => 'numeric|min:1|max:100',
-            'crud_elements_pagination' => 'numeric|min:1|max:100',
+            'crud_list_pagination' => 'numeric|min:1|max:100|nullable',
+            'relationships_list_pagination' => 'numeric|min:1|max:100|nullable',
+            'crud_elements_pagination' => 'numeric|min:1|max:100|nullable',
         ]);
 
-        $params['pagination'] = $request->except(['_token']);
-        $jsonData = json_encode($params);
+        $params = $this->config->getPaginationData();
+        foreach ($request->except(['_token']) as $pagination => $value) {
+            if ($value)
+                $params['pagination'][$pagination] = $value;
+        }
 
+        $jsonData = json_encode($params);
         file_put_contents(__DIR__.'/Config/config.json', $jsonData);
 
         return redirect()->route('dashboard')->with('success', 'Pagination has been set!');

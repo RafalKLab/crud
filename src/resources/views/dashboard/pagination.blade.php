@@ -9,7 +9,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroupPrepend">Current: {{$crudListPagination}}</span>
                         </div>
-                        <input required type="text" name="crud_list_pagination" class="form-control" id="crudListItems" aria-describedby="inputGroupPrepend" placeholder="Enter CRUD list pagination">
+                        <input  type="text" name="crud_list_pagination" class="form-control" id="crudListItems" aria-describedby="inputGroupPrepend" placeholder="Enter CRUD list pagination">
                     </div>
                     @if ($errors->has('crud_list_pagination'))
                             <span class="help-block text-danger">
@@ -24,7 +24,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroupPrepend">Current: {{$relationshipListPagination}}</span>
                         </div>
-                        <input required type="text" name="relationships_list_pagination" class="form-control" id="relationshipListPagination" aria-describedby="relationshipListPagination" placeholder="Enter relationship list pagination">
+                        <input  type="text" name="relationships_list_pagination" class="form-control" id="relationshipListPagination" aria-describedby="relationshipListPagination" placeholder="Enter relationship list pagination">
                     </div>
                     @if ($errors->has('relationships_list_pagination'))
                         <span class="help-block text-danger">
@@ -38,7 +38,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="inputGroupPrepend">Current: {{$crudElementsPagination}}</span>
                         </div>
-                        <input required type="text" name="crud_elements_pagination" class="form-control" id="crud_elements_pagination" aria-describedby="crud_elements_pagination" placeholder="Enter generated CRUD elements pagination list">
+                        <input  type="text" name="crud_elements_pagination" class="form-control" id="crud_elements_pagination" aria-describedby="crud_elements_pagination" placeholder="Enter generated CRUD elements pagination list">
                     </div>
                     @if ($errors->has('crud_elements_pagination'))
                         <span class="help-block text-danger">
