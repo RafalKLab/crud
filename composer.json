@@ -1,6 +1,6 @@
 {
     "name": "rklab/crud",
-    "description": "description",
+    "description": "Package for Laravel 9 with GUI to automatically generate CRUD",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
