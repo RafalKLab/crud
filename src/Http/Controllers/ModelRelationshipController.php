@@ -21,7 +21,7 @@ class ModelRelationshipController extends Controller
 
         $relatedModels = RelatedModel::paginate($itemsPerPage);
 
-        return view("crud::relationship.index")->with('relatedModels', $relatedModels);
+        return view('crud::relationship.index')->with('relatedModels', $relatedModels);
     }
 
     /**
@@ -29,7 +29,7 @@ class ModelRelationshipController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|View|RedirectResponse
      */
-    public function show(RelatedModel $model): View | RedirectResponse
+    public function show(RelatedModel $model): View|RedirectResponse
     {
         $fullyQualifiedAimModelClassName = $this->getFullyQualifiedClassName($model->aim_model);
 
@@ -37,10 +37,9 @@ class ModelRelationshipController extends Controller
         if ($modelData) {
             $modelDataFieldNames = $modelData[0]->getFillable();
 
-            return view("crud::relationship.show")->with(compact('modelData', 'modelDataFieldNames', 'model'));
-
+            return view('crud::relationship.show')->with(compact('modelData', 'modelDataFieldNames', 'model'));
         } else {
-            return redirect()->route('dashboard')->with('warning','Model data not found!.');
+            return redirect()->route('dashboard')->with('warning', 'Model data not found!.');
         }
     }
 
@@ -49,13 +48,13 @@ class ModelRelationshipController extends Controller
      *
      * @return View|RedirectResponse
      */
-    public function getAssignTable(Request $request): View | RedirectResponse
+    public function getAssignTable(Request $request): View|RedirectResponse
     {
         $aimModelId = $request->id;
         $aimModel = $request->aim_model_name;
         $refModel = $request->ref_model_name;
 
-        $aimModelField = sprintf("%s_id", strtolower($aimModel));
+        $aimModelField = sprintf('%s_id', strtolower($aimModel));
         $fullyQualifiedRefClassName = $this->getFullyQualifiedClassName($refModel);
 
         $assignedData = $fullyQualifiedRefClassName::where($aimModelField, $aimModelId)->get();
@@ -63,10 +62,10 @@ class ModelRelationshipController extends Controller
         $refModelRecords = $fullyQualifiedRefClassName::skip(0)->take(1)->get();
 
         if ($refModelRecords) {
-           $refModelFieldNames = $refModelRecords[0]->getFillable();
+            $refModelFieldNames = $refModelRecords[0]->getFillable();
 
-           return view("crud::relationship.assign")->with(
-               compact(
+            return view('crud::relationship.assign')->with(
+                compact(
                    'assignedData',
                    'unAssignedData',
                    'refModelFieldNames',
@@ -74,9 +73,9 @@ class ModelRelationshipController extends Controller
                    'aimModel',
                    'refModel',
                )
-           );
+            );
         } else {
-            return redirect()->route('dashboard')->with('warning','Model data not found!.');
+            return redirect()->route('dashboard')->with('warning', 'Model data not found!.');
         }
     }
 
@@ -88,13 +87,13 @@ class ModelRelationshipController extends Controller
     public function assign(Request $request): RedirectResponse
     {
         $fullyQualifiedRefClassName = $this->getFullyQualifiedClassName($request->ref_model_name);
-        $aimModelField = sprintf("%s_id", strtolower($request->aim_model_name));
+        $aimModelField = sprintf('%s_id', strtolower($request->aim_model_name));
         $refModelId = $request->ref_id;
         $aimModelId = $request->aim_id;
 
         $fullyQualifiedRefClassName::where('id', $refModelId)->update([$aimModelField => $aimModelId]);
 
-        return Redirect::back()->with('success',"Model object was assigned.");
+        return Redirect::back()->with('success', 'Model object was assigned.');
     }
 
     /**
@@ -105,14 +104,14 @@ class ModelRelationshipController extends Controller
     public function unAssign(Request $request): RedirectResponse
     {
         $fullyQualifiedRefClassName = $this->getFullyQualifiedClassName($request->ref_model_name);
-        $aimModelField = sprintf("%s_id", strtolower($request->aim_model_name));
+        $aimModelField = sprintf('%s_id', strtolower($request->aim_model_name));
         $refModelId = $request->ref_id;
         $aimModelId = $request->aim_id;
 
         $fullyQualifiedRefClassName::where('id', $refModelId)->where($aimModelField, $aimModelId)
             ->update([$aimModelField => null]);
 
-        return Redirect::back()->with('success',"Model object was unassigned.");
+        return Redirect::back()->with('success', 'Model object was unassigned.');
     }
 
     /**
@@ -122,7 +121,7 @@ class ModelRelationshipController extends Controller
     {
         $cruds = $this->getRepository()->getCruds();
 
-        return view("crud::relationship.form")->with('cruds', $cruds);
+        return view('crud::relationship.form')->with('cruds', $cruds);
     }
 
     /**
@@ -133,9 +132,9 @@ class ModelRelationshipController extends Controller
     public function storeRelationship(Request $request): RedirectResponse
     {
         $this->validate($request, [
-            'aim_model' => 'required',
+            'aim_model'         => 'required',
             'relationship_type' => 'required',
-            'ref_model' => 'required|different:aim_model',
+            'ref_model'         => 'required|different:aim_model',
         ]);
 
         $transfer = $this->getRelationshipTransfer($request);
@@ -171,9 +170,9 @@ class ModelRelationshipController extends Controller
     private function getRelationshipTransfer(Request $request): ModelRelationshipTransfer
     {
         return $this->getCrudFactory()->createDtoMapper()->mapModelRelationshipToDto(
-                $this->getCrudFactory()->createModelRelationshipTransfer(),
-                $request,
-            );
+            $this->getCrudFactory()->createModelRelationshipTransfer(),
+            $request,
+        );
     }
 
     /**
@@ -182,8 +181,8 @@ class ModelRelationshipController extends Controller
     private function saveRelationEntry(ModelRelationshipTransfer $transfer): void
     {
         $params = [
-            'aim_model' => $transfer->getAimModelName(),
-            'ref_model' => $transfer->getRefModelName(),
+            'aim_model'     => $transfer->getAimModelName(),
+            'ref_model'     => $transfer->getRefModelName(),
             'relation_type' => $transfer->getRelationType(),
         ];
 

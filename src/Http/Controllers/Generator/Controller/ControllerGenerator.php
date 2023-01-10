@@ -18,8 +18,9 @@ class ControllerGenerator implements CrudGeneratorInterface
 
     /**
      * ControllerGenerator constructor.
+     *
      * @param FileWriterInterface $writer
-     * @param CrudConfig $config
+     * @param CrudConfig          $config
      */
     public function __construct(FileWriterInterface $writer, CrudConfig $config)
     {
@@ -27,10 +28,9 @@ class ControllerGenerator implements CrudGeneratorInterface
         $this->config = $config;
     }
 
-
     public function generate(CrudParametersTransfer $transfer): void
     {
-        $controllerFile = file_get_contents(__DIR__ . '/skeleton/controller-skeleton.txt');
+        $controllerFile = file_get_contents(__DIR__.'/skeleton/controller-skeleton.txt');
 
         $modelName = $transfer->getModelName();
         $modelNamelowercase = strtolower($modelName);
@@ -38,8 +38,7 @@ class ControllerGenerator implements CrudGeneratorInterface
         $controllerFile = str_replace('{{model name}}', $modelName, $controllerFile);
         $controllerFile = str_replace('{{model name lowercase}}', $modelNamelowercase, $controllerFile);
 
-
-        $validation = '$this->validate($request, [' . "\n";
+        $validation = '$this->validate($request, ['."\n";
 
         /** @var FieldTransfer $field */
         foreach ($transfer->getTableFields() as $field) {
@@ -47,30 +46,30 @@ class ControllerGenerator implements CrudGeneratorInterface
             foreach ($field->getFieldValidations() as $fieldValidation) {
                 $rule .= match ($fieldValidation) {
                     'required' => 'required|',
-                    'unique' => sprintf('unique:%s|', $transfer->getTableName()),
+                    'unique'   => sprintf('unique:%s|', $transfer->getTableName()),
                 };
             }
 
-            if (!in_array('required', $field->getFieldValidations()))
+            if (!in_array('required', $field->getFieldValidations())) {
                 $rule .= 'nullable|';
+            }
 
             $rule .= match ($field->getFieldType()) {
-                'int' => "numeric|min:1|max:2147483647',",
+                'int'    => "numeric|min:1|max:2147483647',",
                 'string' => "max:255',",
-                'date' => "date',"
+                'date'   => "date',"
             };
 
             $rule .= "\n";
 
             $validation .= $rule;
-
         }
         $validation .= ']);';
 
         $controllerFile = str_replace('{{validation}}', $validation, $controllerFile);
 
         $path = app_path();
-        $path = $path . sprintf("/Http/Controllers/%1\$s/%1\$sController.php", $modelName);
+        $path = $path.sprintf('/Http/Controllers/%1$s/%1$sController.php', $modelName);
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $controllerFile);

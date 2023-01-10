@@ -13,6 +13,7 @@ class ModelGenerator implements CrudGeneratorInterface
 
     /**
      * ModelGenerator constructor.
+     *
      * @param FileWriterInterface $writer
      */
     public function __construct(FileWriterInterface $writer)
@@ -22,7 +23,6 @@ class ModelGenerator implements CrudGeneratorInterface
 
     public function generate(CrudParametersTransfer $transfer): void
     {
-
         $modelFile = $this->getModelFileFromSkeleton();
 
         $modelFile = $this->replaceModelName($modelFile, $transfer->getModelName());
@@ -32,7 +32,7 @@ class ModelGenerator implements CrudGeneratorInterface
         $modelFile = $this->replaceFillable($modelFile, $fillable);
 
         $path = app_path();
-        $path = $path . sprintf("/Models/%1\$s/%1\$s.php", $transfer->getModelName());
+        $path = $path.sprintf('/Models/%1$s/%1$s.php', $transfer->getModelName());
 
         $this->writer->createDirectory($path);
         $this->writer->putTextInFile($path, $modelFile);
@@ -40,7 +40,7 @@ class ModelGenerator implements CrudGeneratorInterface
 
     private function getModelFileFromSkeleton(): string
     {
-        return file_get_contents(__DIR__ . '/skeleton/model-skeleton.txt');
+        return file_get_contents(__DIR__.'/skeleton/model-skeleton.txt');
     }
 
     private function replaceTableName(string $modelFile, string $tableName): string
@@ -55,13 +55,13 @@ class ModelGenerator implements CrudGeneratorInterface
 
     private function prepareFillableFields(array $tableFields): string
     {
-        $fillable = "[";
+        $fillable = '[';
 
         /** @var FieldTransfer $fieldTransfer */
         foreach ($tableFields as $fieldTransfer) {
-            $fillable.= sprintf("'%s',", $fieldTransfer->getFieldName());
+            $fillable .= sprintf("'%s',", $fieldTransfer->getFieldName());
         }
-        $fillable.="]" ;
+        $fillable .= ']';
 
         return $fillable;
     }

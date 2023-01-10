@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Rklab\Crud\Http\Controllers\Writer;
-
 
 interface FileWriterInterface
 {
@@ -10,4 +8,3 @@ interface FileWriterInterface
 
     public function putTextInFile(string $destination, string $fileContent): void;
 }
-

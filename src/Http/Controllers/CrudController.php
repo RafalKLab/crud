@@ -42,7 +42,7 @@ class CrudController extends Controller
      */
     public function prepareCrud(): View
     {
-        return view("crud::crud.crud_settings");
+        return view('crud::crud.crud_settings');
     }
 
     /**
@@ -53,8 +53,8 @@ class CrudController extends Controller
     public function generateCrud(Request $request): RedirectResponse
     {
         for ($i = 1; $i <= $request->input('fieldItterator'); $i++) {
-            $fieldName = 'field_name_' . $i;
-            $selectType = 'select_type_' . $i;
+            $fieldName = 'field_name_'.$i;
+            $selectType = 'select_type_'.$i;
             $this->validate($request, [
                 $fieldName => [
                     'required',
@@ -62,7 +62,7 @@ class CrudController extends Controller
                     'max:100',
                     Rule::notIn(['id', 'created_at', 'updated_at']),
                 ],
-                $selectType => 'required|alpha_dash|max:100',
+                $selectType  => 'required|alpha_dash|max:100',
                 'table_name' => 'required|alpha|max:25|unique:cruds',
                 'model_name' => [
                     'required',
@@ -78,15 +78,15 @@ class CrudController extends Controller
         $transfer = $this->getTransfer($request);
 
         match ($transfer->getGenerateOption()) {
-            'full' => $this->generateFullCrud($transfer),
-            'migration' => $this->generateOnlyMigration($transfer),
-            'model' => $this->generateOnlyModel($transfer),
+            'full'       => $this->generateFullCrud($transfer),
+            'migration'  => $this->generateOnlyMigration($transfer),
+            'model'      => $this->generateOnlyModel($transfer),
             'controller' => $this->generateOnlyController($transfer),
-            'view' => $this->generateOnlyView($transfer),
+            'view'       => $this->generateOnlyView($transfer),
         };
 
         return redirect()->route('dashboard')
-            ->with('success','Successfully generated new CRUD.');
+            ->with('success', 'Successfully generated new CRUD.');
     }
 
     /**
@@ -95,7 +95,7 @@ class CrudController extends Controller
     private function saveCrud(CrudParametersTransfer $transfer): void
     {
         $params = [
-            'route' => sprintf("%ss.index", strtolower($transfer->getModelName())),
+            'route'      => sprintf('%ss.index', strtolower($transfer->getModelName())),
             'table_name' => $transfer->getTableName(),
             'model_name' => $transfer->getModelName(),
         ];
@@ -108,7 +108,7 @@ class CrudController extends Controller
      */
     public function listCrud(): View
     {
-       $itemsPerPage = $this->getCrudFactory()
+        $itemsPerPage = $this->getCrudFactory()
             ->createCrudConfig()
             ->getCrudListPagination();
 
