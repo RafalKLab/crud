@@ -58,7 +58,7 @@ class ControllerGenerator implements CrudGeneratorInterface
                 'int'    => "numeric|min:1|max:2147483647',",
                 'string' => "max:255',",
                 'date'   => "date',",
-                'text' => "min:10|max:2000',",
+                'text'   => "min:10|max:2000',",
             };
 
             $rule .= "\n";

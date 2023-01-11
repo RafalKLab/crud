@@ -174,7 +174,7 @@ class ViewGenerator implements CrudGeneratorInterface
 
     /**
      * @param FieldTransfer $field
-     * @param string $modelNameLowercase
+     * @param string        $modelNameLowercase
      *
      * @return string
      */
@@ -184,7 +184,7 @@ class ViewGenerator implements CrudGeneratorInterface
 
         $formInputs = '';
         $formInputs .= sprintf("<textarea class='form-control' name='%s' id='%s' rows='3'>", $fieldName, $fieldName);
-        $formInputs .= sprintf("@isset($%s){{ $%s->%s }}@endisset", $modelNameLowercase, $modelNameLowercase, $fieldName);
+        $formInputs .= sprintf('@isset($%s){{ $%s->%s }}@endisset', $modelNameLowercase, $modelNameLowercase, $fieldName);
         $formInputs .= sprintf("{{Request::old('%s') ? : ''}}", $fieldName);
         $formInputs .= '</textarea>';
 
