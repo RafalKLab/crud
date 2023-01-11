@@ -104,6 +104,9 @@ class ViewGenerator implements CrudGeneratorInterface
                 case 'date':
                     $formInputs .= $this->putInputTypeDate($field, $modelNameLowercase);
                     break;
+                case 'text':
+                    $formInputs .= $this->putTextArea($field, $modelNameLowercase);
+                    break;
                 default:
                     $formInputs .= $this->putInputTypeText($field, $modelNameLowercase);
             }
@@ -165,6 +168,25 @@ class ViewGenerator implements CrudGeneratorInterface
             $modelNameLowercase,
             $fieldName
         );
+
+        return $formInputs;
+    }
+
+    /**
+     * @param FieldTransfer $field
+     * @param string $modelNameLowercase
+     *
+     * @return string
+     */
+    private function putTextArea(FieldTransfer $field, string $modelNameLowercase): string
+    {
+        $fieldName = $field->getFieldName();
+
+        $formInputs = '';
+        $formInputs .= sprintf("<textarea class='form-control' name='%s' id='%s' rows='3'>", $fieldName, $fieldName);
+        $formInputs .= sprintf("@isset($%s){{ $%s->%s }}@endisset", $modelNameLowercase, $modelNameLowercase, $fieldName);
+        $formInputs .= sprintf("{{Request::old('%s') ? : ''}}", $fieldName);
+        $formInputs .= '</textarea>';
 
         return $formInputs;
     }

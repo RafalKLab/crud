@@ -79,6 +79,7 @@ class MigrationGenerator implements CrudGeneratorInterface
                 'int'    => $this->putIntField($fieldTransfer),
                 'string' => $this->putStringField($fieldTransfer),
                 'date'   => $this->putDateField($fieldTransfer),
+                'text'   => $this->putTextField($fieldTransfer),
             };
             $fields .= $field;
         }
@@ -93,11 +94,21 @@ class MigrationGenerator implements CrudGeneratorInterface
         });';
     }
 
+    /**
+     * @param string $tableName
+     *
+     * @return string
+     */
     private function addDownMethod(string $tableName): string
     {
         return sprintf("Schema::dropIfExists('%s');", $tableName);
     }
 
+    /**
+     * @param FieldTransfer $fieldTransfer
+     *
+     * @return string
+     */
     private function putIntField(FieldTransfer $fieldTransfer): string
     {
         $name = $fieldTransfer->getFieldName();
@@ -110,6 +121,11 @@ class MigrationGenerator implements CrudGeneratorInterface
         }
     }
 
+    /**
+     * @param FieldTransfer $fieldTransfer
+     *
+     * @return string
+     */
     private function putStringField(FieldTransfer $fieldTransfer): string
     {
         $name = $fieldTransfer->getFieldName();
@@ -122,6 +138,11 @@ class MigrationGenerator implements CrudGeneratorInterface
         }
     }
 
+    /**
+     * @param FieldTransfer $fieldTransfer
+     *
+     * @return string
+     */
     private function putDateField(FieldTransfer $fieldTransfer): string
     {
         $name = $fieldTransfer->getFieldName();
@@ -131,6 +152,23 @@ class MigrationGenerator implements CrudGeneratorInterface
             return sprintf('%s$table->date("%s");', "\n", $name);
         } else {
             return sprintf('%s$table->date("%s")->nullable();', "\n", $name);
+        }
+    }
+
+    /**
+     * @param FieldTransfer $fieldTransfer
+     *
+     * @return string
+     */
+    private function putTextField(FieldTransfer $fieldTransfer): string
+    {
+        $name = $fieldTransfer->getFieldName();
+        $validations = $fieldTransfer->getFieldValidations();
+
+        if (in_array('required', $validations)) {
+            return sprintf('%s$table->text("%s");', "\n", $name);
+        } else {
+            return sprintf('%s$table->text("%s")->nullable();', "\n", $name);
         }
     }
 }

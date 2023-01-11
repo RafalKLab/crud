@@ -70,7 +70,8 @@
                                     <option value="{{Request::old("select_type_$i") ? : ''}}" selected>{{Request::old("select_type_$i") ? : '---type---'}}</option>
                                     <option value="int">int</option>
                                     <option value="string">string</option>
-                                    <option value="date">date</option>
+                                    <option value="date">date</option>q
+                                    <option value="text">text</option>q
                                 </select>
                                 @if ($errors->has("select_type_$i"))
                                     <span class="help-block text-danger">

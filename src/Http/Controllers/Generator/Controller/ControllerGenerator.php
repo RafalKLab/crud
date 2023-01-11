@@ -57,7 +57,8 @@ class ControllerGenerator implements CrudGeneratorInterface
             $rule .= match ($field->getFieldType()) {
                 'int'    => "numeric|min:1|max:2147483647',",
                 'string' => "max:255',",
-                'date'   => "date',"
+                'date'   => "date',",
+                'text' => "min:10|max:2000',",
             };
 
             $rule .= "\n";
